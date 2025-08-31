@@ -1,3 +1,4 @@
+// LoaderPage.jsx
 import React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
@@ -88,7 +89,6 @@ export default function LoaderPage() {
       isMounted = false;
     };
   }, [dispatch, prefKey, preferences, navigate]);
-
 
   if (error) {
     return (

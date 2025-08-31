@@ -1,3 +1,4 @@
+// services/geminiApi.js
 import axios from "axios";
 import dotenv from "dotenv";
 dotenv.config();
@@ -23,18 +24,17 @@ export async function getGeminiRecommendations(prompt) {
     );
 
     const raw = response.data.candidates?.[0]?.content?.parts?.[0]?.text || "";
-    
     console.log("Raw Gemini response:", raw);
 
-    // 🔧 Strip markdown fences
+    // Remove markdown code fences
     const clean = raw
       .replace(/```json/g, "")
       .replace(/```/g, "")
       .trim();
-      
+
     console.log("Cleaned Gemini response:", clean);
 
-    // 🔧 Ensure array, not just object
+    // Parse JSON safely
     let parsed;
     try {
       parsed = JSON.parse(clean);
@@ -43,20 +43,23 @@ export async function getGeminiRecommendations(prompt) {
       throw new Error("Invalid JSON from Gemini");
     }
 
-    if (!Array.isArray(parsed)) {
-      console.error("Gemini returned object instead of array:", parsed);
-      console.error("Raw Gemini response:", raw);
-      
-      // Try to convert object to array if it has a days property
-      if (parsed && typeof parsed === 'object' && parsed.days) {
-        console.log("Attempting to convert object to array format...");
-        return [parsed.days].flat(); // Convert to array
-      }
-      
-      throw new Error("Gemini output is not an array. Expected array format but got: " + typeof parsed);
+    // Ensure array output
+    if (Array.isArray(parsed)) return parsed;
+
+    if (parsed && typeof parsed === "object") {
+      if (parsed.days) return parsed.days;           // { days: [...] }
+      if (parsed.itinerary) return parsed.itinerary; // { itinerary: [...] }
+      if (parsed.day && parsed.theme && parsed.activities) return [parsed]; // single day object
+
+      // fallback: return first array property found
+      const arrayProps = Object.values(parsed).filter(Array.isArray);
+      if (arrayProps.length > 0) return arrayProps[0];
     }
 
-    return parsed;
+    throw new Error(
+      "Gemini output is not an array. Expected array format but got: " +
+        typeof parsed
+    );
   } catch (err) {
     console.error("Error in getGeminiRecommendations:", err);
 

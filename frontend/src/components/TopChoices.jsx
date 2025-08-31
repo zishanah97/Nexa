@@ -1,3 +1,4 @@
+// TopChoices.jsx
 import React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
@@ -245,7 +246,7 @@ function TopChoices() {
             onClick={async () => {
               try {
                 console.log("Manually triggering itinerary generation for:", preferences);
-                const response = await fetch('https://nexa-5.onrender.com/api/v1/recommendations/itinerary', {
+                const response = await fetch('https://localhost:5000/api/v1/recommendations/itinerary', {
                   method: 'POST',
                   headers: { "Content-Type": "application/json" },
                   body: JSON.stringify({ preferences })

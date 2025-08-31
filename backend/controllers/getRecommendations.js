@@ -1,8 +1,7 @@
+// Backend controller (e.g., getRecommendations.js)
 import { getGeminiRecommendations } from "../services/geminiApi.js";
 import { fetchPixabayImages } from "../services/pixabayApi.js";
 import dotenv from "dotenv";
-// Removed incorrect React import - this is a backend file
-
 dotenv.config();
 
 const getRecommendations = async (req, res) => {
@@ -21,7 +20,7 @@ USER INPUTS
 - LOCATION: ${preferences.location}          
 - NUM_PEOPLE:  ${preferences.numPeople}
 - PRICE_RANGE: ${preferences.budget}     
-- DAYS:  ${preferences.days}                  
+- DAYS:  ${preferences.days}                 
 
 SCOPING & GRANULARITY RULES
 - If LOCATION is a country/large region → pick cities/regions within it.
@@ -152,7 +151,6 @@ USER INPUTS
 - PRICE_RANGE: ${preferences.budget}
 - DAYS: ${preferences.days}
 
-
 STRUCTURE & RULES
 - Break the plan into "Day 1, Day 2, …".
 - For each day include:
@@ -186,10 +184,10 @@ OUTPUT FORMAT (MANDATORY)
 Respond with ONLY valid JSON.
 Do NOT add explanations, greetings, or text outside JSON.
 Start directly with "[" and end with "]".
+Return EXACTLY a JSON array of day objects. Do NOT return a single object or any other format. The root must be an array.
+CRITICAL: Output MUST be an array like [ {day:1, ...}, {day:2, ...} ] - no wrapping object.
 
-CRITICAL: You MUST return a JSON array containing day objects. Do NOT return a single object or any other format.
-
-EXAMPLE OUTPUT FORMAT:
+EXAMPLE OUTPUT FORMAT (MUST MATCH EXACTLY):
 [
   {
     "day": 1,
@@ -242,5 +240,4 @@ EXAMPLE OUTPUT FORMAT:
   }
 };
 
-
-export { getRecommendations , getItinerary};
+export { getRecommendations, getItinerary };
