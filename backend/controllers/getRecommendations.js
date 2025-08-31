@@ -186,6 +186,28 @@ OUTPUT FORMAT (MANDATORY)
 Respond with ONLY valid JSON.
 Do NOT add explanations, greetings, or text outside JSON.
 Start directly with "[" and end with "]".
+
+CRITICAL: You MUST return a JSON array containing day objects. Do NOT return a single object or any other format.
+
+EXAMPLE OUTPUT FORMAT:
+[
+  {
+    "day": 1,
+    "theme": "Welcome to Your Destination",
+    "activities": [
+      {
+        "time": "Morning",
+        "title": "Activity name",
+        "description": "Description here",
+        "category": "sightseeing",
+        "est_cost_per_person": { "min": 10, "max": 50 },
+        "duration": "2 hours",
+        "image_search_query": "search query for this activity",
+        "map_hint": "location name"
+      }
+    ]
+  }
+]
     `;
 
     // Get itinerary from Gemini (now always array)

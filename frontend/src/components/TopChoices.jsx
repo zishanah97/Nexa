@@ -76,7 +76,7 @@ function TopChoices() {
         const fetchItinerary = async () => {
         try {
           console.log("Fetching itinerary for preferences:", preferences);
-          const response = await fetch('https:///nexa-5.onrender.com/api/v1/recommendations/itinerary', {
+                     const response = await fetch('https://nexa-5.onrender.com/api/v1/recommendations/itinerary', {
             method: 'POST',
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ preferences })

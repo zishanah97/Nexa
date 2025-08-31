@@ -23,12 +23,16 @@ export async function getGeminiRecommendations(prompt) {
     );
 
     const raw = response.data.candidates?.[0]?.content?.parts?.[0]?.text || "";
+    
+    console.log("Raw Gemini response:", raw);
 
     // 🔧 Strip markdown fences
     const clean = raw
       .replace(/```json/g, "")
       .replace(/```/g, "")
       .trim();
+      
+    console.log("Cleaned Gemini response:", clean);
 
     // 🔧 Ensure array, not just object
     let parsed;
@@ -40,7 +44,16 @@ export async function getGeminiRecommendations(prompt) {
     }
 
     if (!Array.isArray(parsed)) {
-      throw new Error("Gemini output is not an array");
+      console.error("Gemini returned object instead of array:", parsed);
+      console.error("Raw Gemini response:", raw);
+      
+      // Try to convert object to array if it has a days property
+      if (parsed && typeof parsed === 'object' && parsed.days) {
+        console.log("Attempting to convert object to array format...");
+        return [parsed.days].flat(); // Convert to array
+      }
+      
+      throw new Error("Gemini output is not an array. Expected array format but got: " + typeof parsed);
     }
 
     return parsed;
