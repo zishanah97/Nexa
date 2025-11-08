@@ -9,7 +9,7 @@ import storage from "redux-persist/lib/storage";
 const preferencesPersistConfig = {
   key: "preferences",
   storage,
-  whitelist: ['location', 'days', 'numPeople', 'budget'] // Only persist these fields
+  whitelist: ['location', 'days', 'numPeople', 'budget', 'lastFetchedKey'] // Only persist these fields
 };
 
 const recommendationPersistConfig = {

@@ -2,7 +2,9 @@ import React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import Card from "./Card.jsx";
-import { setItinerary } from "../slices/itinerarySlice.js"; 
+import { setItinerary } from "../slices/itinerarySlice.js";
+import { setLastFetchedKey } from "../slices/preferencesSlice.js";
+import { generatePreferenceKey, shouldFetchData } from "../utils/cacheUtils.js"; 
 
 function TopChoices() {
   const locationRouter = useLocation();
@@ -59,50 +61,79 @@ function TopChoices() {
     }
   }, [preferences, navigate]);
 
-  // Fetch itinerary after recommendations are loaded
-  React.useEffect(() => {
-    if (preferences.location && recommendation) {
-      // Check if itinerary already exists
-      const itineraryKey = JSON.stringify(preferences);
-      const existingItinerary = allItineraries[itineraryKey];
-      
-      if (existingItinerary) {
-        console.log("Itinerary already exists for these preferences:", existingItinerary);
-        return;
-      }
-      
+  // Use ref to track if we've already processed the current preferences
+  const processedPrefKeyRef = React.useRef(null);
+  
+  // Helper function to fetch itinerary (only when needed)
+  const fetchItineraryIfNeeded = React.useCallback(async () => {
+    if (!preferences.location || !recommendation) return;
     
-      setTimeout(() => {
-        const fetchItinerary = async () => {
-        try {
-          console.log("Fetching itinerary for preferences:", preferences);
-          const response = await fetch('https://nexa-5.onrender.com/api/v1/recommendations/itinerary', {
-            method: 'POST',
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ preferences })
-          });
-          
-          if (response.ok) {
-            const itineraryData = await response.json();
-            console.log("Itinerary data received:", itineraryData);
-            // Store itinerary with a key based on preferences
-            const itineraryKey = JSON.stringify(preferences);
-            console.log("Storing itinerary with key:", itineraryKey);
-            dispatch(setItinerary({ key: itineraryKey, data: itineraryData }));
-            console.log("Itinerary dispatched to Redux");
-          } else {
-            console.error("Failed to fetch itinerary:", response.status, response.statusText);
-            const errorText = await response.text();
-            console.error("Error response:", errorText);
-          }
-        } catch (err) {
-          console.error("Failed to fetch itinerary:", err);
-        }
-      };
-      fetchItinerary();
-        }, 1000); // 1 second delay
+    const currentKey = generatePreferenceKey(preferences);
+    
+    // Skip if we've already processed these exact preferences
+    if (processedPrefKeyRef.current === currentKey) {
+      console.log("Skipping itinerary API call - already processed these preferences");
+      return;
+    }
+    
+    // Use utility function to check if we should fetch
+    if (!shouldFetchData(preferences, allItineraries)) {
+      console.log("Skipping itinerary API call - data already cached or preferences unchanged");
+      // Mark as processed even if we're not fetching
+      processedPrefKeyRef.current = currentKey;
+      return;
+    }
+    
+    try {
+      console.log("Fetching new itinerary for preferences:", preferences);
+      const response = await fetch('http://localhost:5000/api/v1/recommendations/itinerary', {
+        method: 'POST',
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ preferences })
+      });
+      
+      if (response.ok) {
+        const itineraryData = await response.json();
+        console.log("New itinerary data received:", itineraryData);
+        
+        // Store itinerary and update last fetched key
+        dispatch(setItinerary({ key: currentKey, data: itineraryData }));
+        dispatch(setLastFetchedKey(currentKey));
+        processedPrefKeyRef.current = currentKey;
+        console.log("Itinerary cached and fetch key updated");
+      } else {
+        console.error("Failed to fetch itinerary:", response.status, response.statusText);
+      }
+    } catch (err) {
+      console.error("Failed to fetch itinerary:", err);
     }
   }, [preferences, recommendation, allItineraries, dispatch]);
+
+  // Only fetch itinerary when truly needed - use a more stable check
+  React.useEffect(() => {
+    const currentKey = generatePreferenceKey(preferences);
+    
+    // Reset processed key if preferences actually changed
+    if (processedPrefKeyRef.current !== currentKey && currentKey) {
+      processedPrefKeyRef.current = null;
+    }
+    
+    // Only proceed if we have valid preferences and recommendation
+    if (!preferences.location || !recommendation || !currentKey) {
+      return;
+    }
+    
+    // Check if we should fetch - this will be false if data exists or preferences unchanged
+    if (shouldFetchData(preferences, allItineraries)) {
+      const timeoutId = setTimeout(() => {
+        fetchItineraryIfNeeded();
+      }, 1000);
+      return () => clearTimeout(timeoutId);
+    } else {
+      // Mark as processed if we're not fetching
+      processedPrefKeyRef.current = currentKey;
+    }
+  }, [preferences.location, preferences.days, preferences.numPeople, preferences.budget, recommendation, allItineraries, fetchItineraryIfNeeded]);
 
   // Debug logging to help troubleshoot
   React.useEffect(() => {
@@ -240,68 +271,19 @@ function TopChoices() {
             🗺️ Generate Your Itinerary
           </button>
           
-          {/* Debug button to manually trigger itinerary generation */}
-          <button
-            onClick={async () => {
-              try {
-                console.log("Manually triggering itinerary generation for:", preferences);
-                const response = await fetch('https://nexa-5.onrender.com/api/v1/recommendations/itinerary', {
-                  method: 'POST',
-                  headers: { "Content-Type": "application/json" },
-                  body: JSON.stringify({ preferences })
-                });
-                
-                if (response.ok) {
-                  const itineraryData = await response.json();
-                  console.log("Manual itinerary data received:", itineraryData);
-                  const itineraryKey = JSON.stringify(preferences);
-                  dispatch(setItinerary({ key: itineraryKey, data: itineraryData }));
-                  console.log("Manual itinerary dispatched to Redux");
-                } else {
-                  console.error("Manual itinerary fetch failed:", response.status);
-                }
-              } catch (err) {
-                console.error("Manual itinerary fetch error:", err);
-              }
-            }}
-            className="w-full sm:w-auto px-4 sm:px-6 py-3 sm:py-4 bg-gradient-to-r from-green-600 to-blue-600 text-white font-bold rounded-2xl shadow-2xl hover:shadow-purple-500/25 hover:scale-105 transition-all duration-300 text-sm sm:text-base"
-          >
-            🧪 Debug: Generate Itinerary
-          </button>
-          
-          {/* Test Redux action directly */}
-          <button
-            onClick={() => {
-              const testData = [{ day: 1, theme: "Test Day", activities: [] }];
-              const testKey = JSON.stringify(preferences);
-              console.log("Testing Redux action directly with:", { key: testKey, data: testData });
-              dispatch(setItinerary({ key: testKey, data: testData }));
-            }}
-            className="w-full sm:w-auto px-4 py-3 sm:py-4 bg-gradient-to-r from-red-600 to-pink-600 text-white font-bold rounded-2xl shadow-2xl hover:shadow-purple-500/25 hover:scale-105 transition-all duration-300 text-sm sm:text-base"
-          >
-            🔴 Test Redux Action
-          </button>
-          
-          {/* Check localStorage */}
-          <button
-            onClick={() => {
-              console.log("Checking localStorage:");
-              const keys = Object.keys(localStorage);
-              keys.forEach(key => {
-                if (key.includes('itinerary') || key.includes('persist')) {
-                  try {
-                    const value = JSON.parse(localStorage.getItem(key));
-                    console.log(key, value);
-                  } catch (e) {
-                    console.log(key, localStorage.getItem(key));
-                  }
-                }
-              });
-            }}
-            className="w-full sm:w-auto px-4 py-3 sm:py-4 bg-gradient-to-r from-gray-600 to-gray-700 text-white font-bold rounded-2xl shadow-2xl hover:shadow-purple-500/25 hover:scale-105 transition-all duration-300 text-sm sm:text-base"
-          >
-            📦 Check localStorage
-          </button>
+          {/* Force refresh button - only show in development */}
+          {process.env.NODE_ENV === 'development' && (
+            <button
+              onClick={() => {
+                // Clear cached data and force refetch
+                dispatch(setLastFetchedKey(null));
+                fetchItineraryIfNeeded();
+              }}
+              className="w-full sm:w-auto px-4 sm:px-6 py-2 sm:py-4 bg-gradient-to-r from-orange-600 to-red-600 text-white font-bold rounded-2xl shadow-2xl hover:shadow-purple-500/25 hover:scale-105 transition-all duration-300 text-sm sm:text-base"
+            >
+              🔄 Force Refresh
+            </button>
+          )}
         </section>
       </div>
     </div>

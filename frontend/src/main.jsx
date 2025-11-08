@@ -14,7 +14,7 @@ import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
 import { store, persistor } from "./Store.js";
 import Trending from './components/Trending.jsx'
-// DO NOT import RouterProvider again or router from './router' here!
+
 
 const router = createBrowserRouter([
   {

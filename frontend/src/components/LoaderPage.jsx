@@ -2,6 +2,7 @@ import React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { setRecommendation } from "../slices/recommendationSlice";
+import { setLastFetchedKey } from "../slices/preferencesSlice";
 import axios from "axios";
 
 const steps = [
@@ -43,7 +44,7 @@ export default function LoaderPage() {
         
         // For backward compatibility, still get the full recommendation
         const response = await axios.post(
-         "https://nexa-5.onrender.com/api/v1/recommendations",
+         "http://localhost:5000/api/v1/recommendations",
           { preferences }
         );
         console.log("API POST preferences:", preferences, "Response:", response.data, "prefKey:", prefKey);
@@ -61,6 +62,8 @@ export default function LoaderPage() {
                 data: response.data
               })
             );
+            // Mark these preferences as fetched to prevent redundant API calls
+            dispatch(setLastFetchedKey(prefKey));
             setActiveStep(4); 
           }
         }, 600);
