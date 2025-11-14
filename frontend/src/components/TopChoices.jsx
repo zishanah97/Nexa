@@ -7,6 +7,8 @@ import { setLastFetchedKey } from "../slices/preferencesSlice.js";
 import { generatePreferenceKey, shouldFetchData } from "../utils/cacheUtils.js"; 
 import { motion } from "framer-motion";
 
+const API_BASE = import.meta.env.VITE_API_BASE_URL || "http://localhost:5000";
+
 function TopChoices() {
   const locationRouter = useLocation();
   const navigate = useNavigate();
@@ -87,7 +89,7 @@ function TopChoices() {
     
     try {
       console.log("Fetching new itinerary for preferences:", preferences);
-      const response = await fetch('http://localhost:5000/api/v1/recommendations/itinerary', {
+      const response = await fetch(`${API_BASE}/api/v1/recommendations/itinerary`, {
         method: 'POST',
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ preferences })
@@ -126,10 +128,8 @@ function TopChoices() {
     
     // Check if we should fetch - this will be false if data exists or preferences unchanged
     if (shouldFetchData(preferences, allItineraries)) {
-      const timeoutId = setTimeout(() => {
-        fetchItineraryIfNeeded();
-      }, 1000);
-      return () => clearTimeout(timeoutId);
+      // Fetch immediately in the background so itinerary is ready when user opens the page
+      fetchItineraryIfNeeded();
     } else {
       // Mark as processed if we're not fetching
       processedPrefKeyRef.current = currentKey;
