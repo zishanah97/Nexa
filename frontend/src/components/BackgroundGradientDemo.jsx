@@ -1,4 +1,4 @@
-import cn from './utils.jsx'
+import cn from '../utils/cn.js'
 import React from "react";
 import { motion } from "@motionone/react";
 

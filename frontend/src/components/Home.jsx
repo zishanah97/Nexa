@@ -1,25 +1,44 @@
+// src/components/Home.jsx
 import { useState } from "react";
-import { FaChevronDown, FaSearch, FaUsers, FaCalendarAlt, FaMoneyBillWave } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
+import { motion } from "framer-motion";
+import {
+  MapPin,
+  Calendar,
+  Users,
+  Wallet,
+  Sparkles,
+  ChevronDown,
+  ArrowRight,
+  TrendingUp
+} from "lucide-react";
 import { setPreferences, clearPreferences } from "../slices/preferencesSlice.js";
-import TickerCarouselGSAP from "./TickerCarouselGSAP.jsx";
 
-// Options arrays
+// Animations per spec: use only initial/animate/exit, whileHover/whileTap, transition, and staggerChildren/delayChildren.
+
+// ──────────────────────────────────────────────────────────────
+//  DATA
+// ──────────────────────────────────────────────────────────────
 const dayOptions = ["One Day", "Two Days", "Three Days", "Week", "Many Weeks", "One Month"];
-const peopleOptions = [
-  "Solo", "Couple", "Small Group (3-5)", "Medium Group (6-10)", "Large Group (10+)"
-];
+const peopleOptions = ["Solo", "Couple", "Small Group (3-5)", "Medium Group (6-10)", "Large Group (10+)"];
 const priceOptions = [
-  { label: "1k+", value: 1000 },
-  { label: "5k+", value: 5000 },
-  { label: "10k+", value: 10000 },
-  { label: "20k+", value: 20000 },
-  { label: "50k+", value: 50000 },
-  { label: "100k+", value: 100000 },
-  { label: "Luxury", value: "luxury" }
+  { label: "Budget ₹1k+", value: 1000 },
+  { label: "Moderate ₹5k+", value: 5000 },
+  { label: "Comfortable ₹10k+", value: 10000 },
+  { label: "Premium ₹20k+", value: 20000 },
+  { label: "Deluxe ₹50k+", value: 50000 },
+  { label: "Elite ₹100k+", value: 100000 },
+  { label: "Luxury 💎", value: "luxury" }
 ];
 
+const popularDestinations = [
+  "Paris", "Bali", "Tokyo", "New York", "Dubai", "Maldives", "Iceland", "Santorini"
+];
+
+// ──────────────────────────────────────────────────────────────
+//  MAIN COMPONENT
+// ──────────────────────────────────────────────────────────────
 export default function Home() {
   const [pref, setPref] = useState({
     destination: "",
@@ -27,180 +46,338 @@ export default function Home() {
     people: "",
     price: ""
   });
-  const [open, setOpen] = useState({ days: false, people: false, price: false });
+  const [open, setOpen] = useState({
+    days: false,
+    people: false,
+    price: false
+  });
   const [loading, setLoading] = useState(false);
+  const [focused, setFocused] = useState(false);
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const handleSearch = async () => {
-    setLoading(true);
+  const handleSearch = () => {
+    if (!pref.destination.trim()) {
+      return;
+    }
 
+    setLoading(true);
     dispatch(clearPreferences());
 
     const preferences = {
       location: pref.destination,
-      days: pref.days,
-      numPeople: pref.people,
-      budget: pref.price
+      days: pref.days || "One Day",
+      numPeople: pref.people || "Solo",
+      budget: pref.price || 5000
     };
 
     dispatch(setPreferences(preferences));
-
-    const prefKey = JSON.stringify(preferences);
-    navigate("/loader", { state: { prefKey, preferences } });
-    setLoading(false);
+    navigate("/loader", {
+      state: {
+        prefKey: JSON.stringify(preferences),
+        preferences
+      }
+    });
   };
 
+  const isFormValid = pref.destination.trim().length > 0;
+
   return (
-    <div className="relative min-h-screen bg-black text-white flex flex-col w-full px-4">
-      <main className="flex-1 w-full flex flex-col items-center pt-8 pb-24 px-3 md:px-20">
-         <TickerCarouselGSAP />
-        <div className="w-full max-w-2xl mb-14 font-chillax mx-auto text-center mt-6">
-          {/* Heading */}
-          <h1
-            className="text-5xl md:text-6xl font-bold mb-2 animate-fade-in-up"
-            style={{
-              fontFamily: "'Stardos Stencil', 'Inter', sans-serif",
-              fontWeight: 700,
-            }}
-          >
-            Plan your{" "}
-            <span className="bg-gradient-to-br from-blue-400 via-purple-500 to-pink-500 bg-clip-text text-transparent font-extrabold">
-              dream trip
-            </span>
-          </h1>
-          <div className=" text-sm   md:text-lg text-gray-400 mb-8 animate-fade-in-up delay-200">
-            Enter destination, days, people, and budget to get custom recommendations.
-          </div>
+    <motion.div
+      className="min-h-screen w-full bg-white relative overflow-x-hidden pb-24 md:pb-0"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ staggerChildren: 0.15, delayChildren: 0.2 }}
+    >
 
-          {/* Search Bar */}
-          <div className="w-full mt-8 px-1">
+      {/* DOTTED BACKGROUND */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 0.5 }}
+        transition={{ duration: 0.6 }}
+        className="fixed inset-0 z-0 pointer-events-none"
+        style={{
+          backgroundImage:
+            'radial-gradient(circle at 1px 1px, rgba(0, 0, 0, 0.35) 1px, transparent 0)',
+          backgroundSize: '20px 20px',
+        }}
+        aria-hidden="true"
+      />
+
+      {/* MAIN CONTENT */}
+      <main className="relative z-10 w-full px-4 sm:px-6 lg:px-0 pt-20 md:pt-24 pb-16 min-h-[85vh] flex items-center justify-center">
+        <motion.div
+          className="max-w-5xl mx-auto w-full"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ staggerChildren: 0.15, delayChildren: 0.2 }}
+        >
+
+          {/* HEADLINE */}
+          <motion.div className="text-center mb-12 lg:mb-16" initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, type: "spring", stiffness: 100 }}>
+            <motion.h1 className="flex flex-col items-center gap-0 mb-6" style={{ lineHeight: '1' }} initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, type: "spring", stiffness: 100 }}>
+              <motion.span className="font-black tracking-tight text-5xl sm:text-7xl md:text-8xl lg:text-9xl text-black" style={{ fontFamily: '"Bebas Neue", cursive', display: 'inline-block' }} initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, type: "spring", stiffness: 100 }}>
+                Where Dreams
+              </motion.span>
+              <motion.span className="bg-gradient-to-r from-orange-600 via-orange-500 to-yellow-400 bg-clip-text text-transparent font-bold text-5xl sm:text-7xl md:text-8xl lg:text-9xl" style={{ fontFamily: '"Playfair Display", serif', display: 'inline-block' }} initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, type: "spring", stiffness: 100, delay: 0.05 }}>
+                TAKE FLIGHT
+              </motion.span>
+            </motion.h1>
+            <motion.p className="text-base sm:text-lg md:text-xl text-gray-700 max-w-2xl mx-auto font-medium px-4" style={{ fontFamily: '"Montserrat", sans-serif', lineHeight: 1.7, letterSpacing: '0.01em', fontWeight: 500 }} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.1 }}>
+              Tell us your{' '}
+              <motion.span className="text-orange-600 inline-block" style={{ fontFamily: '"Lobster", cursive', fontWeight: 700 }} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.15 }} whileHover={{ scale: 1.15 }}>
+                destination & vibe
+              </motion.span>
+              {' '}— we'll craft the perfect journey
+            </motion.p>
+          </motion.div>
+
+          {/* SEARCH FORM */}
+          <motion.div className="w-full max-w-4xl mx-auto mb-12" initial={{ opacity: 0, scale: 0.92 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.6, type: "spring", stiffness: 90 }}>
             <form
-              onSubmit={e => { e.preventDefault(); handleSearch(); }}
-              className="w-full flex flex-col sm:flex-row items-stretch gap-2 bg-[#18181b] border border-[#23232a] rounded-2xl shadow-xl px-3 sm:py-3 mb-10 backdrop-blur-sm"
+              onSubmit={(e) => {
+                e.preventDefault();
+                handleSearch();
+              }}
             >
-              {/* Destination Input */}
-              <input
-                className="
-                  bg-transparent text-white placeholder-gray-500 p-3 rounded-xl outline-none text-base flex-1 min-w-[150px] border border-transparent
-                  focus:border-purple-500 focus:ring-2 focus:ring-purple-600
-                  hover:border-purple-500 transition cursor-text
-                "
-                placeholder="Destination (city, region, country...)"
-                value={pref.destination}
-                onChange={e => setPref(v => ({ ...v, destination: e.target.value }))}
-              />
-
-              {/* Dropdowns */}
-              <div className="flex flex-col sm:flex-row gap-2 flex-1 z-100">
-                {/* Days Dropdown */}
-                <Dropdown
-                  label="Days"
-                  icon={<FaCalendarAlt className="mr-2" />}
-                  options={dayOptions}
-                  value={pref.days}
-                  open={open.days}
-                  onToggle={() => setOpen(o => ({ ...o, days: !o.days }))}
-                  onSelect={opt => { setPref(p => ({ ...p, days: opt })); setOpen(o => ({ ...o, days: false })); }}
-                />
-                {/* People Dropdown */}
-                <Dropdown
-                  label="People"
-                  icon={<FaUsers className="mr-2" />}
-                  options={peopleOptions}
-                  value={pref.people}
-                  open={open.people}
-                  onToggle={() => setOpen(o => ({ ...o, people: !o.people }))}
-                  onSelect={opt => { setPref(p => ({ ...p, people: opt })); setOpen(o => ({ ...o, people: false })); }}
-                />
-                {/* Price Dropdown */}
-                <Dropdown
-                  label="Budget"
-                  icon={<FaMoneyBillWave className="mr-2" />}
-                  options={priceOptions.map(opt => opt.label)}
-                  value={pref.price ? (typeof pref.price === 'string' ? pref.price : `₹${pref.price / 1000}k+`) : ""}
-                  open={open.price}
-                  onToggle={() => setOpen(o => ({ ...o, price: !o.price }))}
-                  onSelect={label => {
-                    const selected = priceOptions.find(opt => opt.label === label);
-                    setPref(p => ({ ...p, price: selected.value }));
-                    setOpen(o => ({ ...o, price: false }));
-                  }}
-                />
-              </div>
-
-              {/* Search Button */}
-              <button
-                type="submit"
-                disabled={loading}
+              <motion.div
+                initial={{ opacity: 0, scale: 0.92 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.6, type: "spring", stiffness: 90 }}
                 className={`
-    flex items-center justify-center gap-2 w-full py-3 mt-2
-    rounded-xl font-semibold text-lg
-    bg-gradient-to-r from-blue-500 via-purple-600 to-pink-500
-    hover:shadow-[0_0_20px_rgba(147,51,234,0.7)]
-    shadow-lg text-white transition
-    cursor-pointer hover:scale-[1.02] active:scale-95
-    ${loading ? 'pointer-events-none opacity-70' : ''}
-  `}
+                  relative bg-white/90 backdrop-blur-2xl 
+                  rounded-3xl p-6 sm:p-8 lg:p-10 overflow-visible
+                  shadow-2xl transition-all duration-300
+                  border-2
+                  ${focused ? 'border-orange-400' : 'border-transparent'}
+                `}
               >
-                <FaSearch className="text-xl" />
-                <span>Search</span>
-              </button>
+                {/* DESTINATION */}
+                <div className="mb-6 sm:mb-8">
+                  <div className="flex items-center gap-3 mb-3">
+                    <MapPin className="w-5 h-5 text-orange-600" />
+                    <label
+                      className="text-xs sm:text-sm font-bold tracking-wide text-gray-800 uppercase"
+                      style={{ fontFamily: '"Unbounded", sans-serif' }}
+                    >
+                      Destination
+                    </label>
+                  </div>
+                  <motion.input
+                    type="text"
+                    placeholder="Where to? (e.g., Paris, Bali, Tokyo...)"
+                    className="w-full bg-white/95 backdrop-blur-sm text-gray-900 placeholder-gray-500 
+                               px-5 sm:px-6 py-4 text-base sm:text-lg rounded-2xl 
+                               outline-none border-2 border-gray-200
+                               focus:border-orange-400 focus:shadow-lg 
+                               transition-all duration-300 font-medium"
+                    style={{ fontFamily: '"Inter", sans-serif' }}
+                    value={pref.destination}
+                    onChange={(e) => setPref({ ...pref, destination: e.target.value })}
+                    onFocus={() => setFocused(true)}
+                    onBlur={() => setFocused(false)}
+                    initial={{ opacity: 0, y: 15 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5, delay: 0.1, type: "spring", stiffness: 120 }}
+                  />
+                </div>
 
+                {/* PREFERENCES GRID */}
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-5 mb-8 sm:mb-10">
+                  <CustomDropdown
+                    label="Duration"
+                    icon={<Calendar className="w-5 h-5" />}
+                    options={dayOptions}
+                    value={pref.days}
+                    placeholder="Select days"
+                    open={open.days}
+                    onToggle={() => setOpen({ days: !open.days, people: false, price: false })}
+                    onSelect={(v) => {
+                      setPref({ ...pref, days: v });
+                      setOpen({ ...open, days: false });
+                    }}
+                  />
+
+                  <CustomDropdown
+                    label="Travelers"
+                    icon={<Users className="w-5 h-5" />}
+                    options={peopleOptions}
+                    value={pref.people}
+                    placeholder="How many?"
+                    open={open.people}
+                    onToggle={() => setOpen({ days: false, people: !open.people, price: false })}
+                    onSelect={(v) => {
+                      setPref({ ...pref, people: v });
+                      setOpen({ ...open, people: false });
+                    }}
+                  />
+
+                  <CustomDropdown
+                    label="Budget"
+                    icon={<Wallet className="w-5 h-5" />}
+                    options={priceOptions.map(o => o.label)}
+                    value={pref.price ? (typeof pref.price === 'string' ? 'Luxury 💎' : priceOptions.find(o => o.value === pref.price)?.label) : ""}
+                    placeholder="Your range"
+                    open={open.price}
+                    onToggle={() => setOpen({ days: false, people: false, price: !open.price })}
+                    onSelect={(label) => {
+                      const sel = priceOptions.find(o => o.label === label);
+                      setPref({ ...pref, price: sel.value });
+                      setOpen({ ...open, price: false });
+                    }}
+                  />
+                </div>
+
+                {/* CTA */}
+                <motion.button
+                  type="submit"
+                  disabled={loading || !isFormValid}
+                  initial={{ opacity: 0, y: 15 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: 0.3, type: "spring", stiffness: 120 }}
+                  whileHover={isFormValid ? { scale: 1.05, y: -2 } : {}}
+                  whileTap={isFormValid ? { scale: 0.98 } : {}}
+                  className={`
+                    group w-full relative overflow-hidden
+                    bg-black text-white 
+                    font-bold px-8 py-4 sm:py-5 rounded-full
+                    text-lg sm:text-xl shadow-xl
+                    flex items-center justify-center gap-3
+                    transition-all duration-300
+                    ${!isFormValid || loading ? 'opacity-50 cursor-not-allowed' : ''}
+                  `}
+                  style={{ fontFamily: '"Inter", sans-serif', letterSpacing: '0.01em' }}
+                >
+                  {loading ? (
+                    <>
+                      <motion.div className="w-6 h-6 border-3 border-white/30 border-t-white rounded-full" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }} />
+                      Creating Magic...
+                    </>
+                  ) : (
+                    <>
+                      <span className="hidden sm:inline">Start Planning</span>
+                      <span className="sm:hidden">Plan Trip</span>
+                      <motion.div>
+                        <ArrowRight className="w-5 h-5 sm:w-6 sm:h-6" />
+                      </motion.div>
+                    </>
+                  )}
+
+                  <span className="absolute bottom-0 w-[88%] left-1/2 -translate-x-1/2 h-[4px] bg-gradient-to-r from-transparent via-amber-600 to-transparent group-hover:opacity-0 transition-opacity duration-300" />
+                  <span className="absolute top-0 w-[88%] left-1/2 -translate-x-1/2 h-[4px] bg-gradient-to-r from-transparent via-amber-500 to-transparent group-hover:opacity-0 transition-opacity duration-300" />
+                </motion.button>
+              </motion.div>
             </form>
+          </motion.div>
 
-            {/* Ticker */}
-            <div className="relative">
-              <div className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-purple-500/60 via-pink-400/60 to-blue-400/60 rounded-full blur-sm" />
-             
+          {/* POPULAR DESTINATIONS */}
+          <motion.div className="text-center" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.2 }}>
+            <div className="flex items-center justify-center gap-2 mb-6">
+              <TrendingUp className="w-5 h-5 text-orange-600" />
+              <h3
+                className="text-sm sm:text-base font-bold text-gray-700 uppercase tracking-wider"
+                style={{ fontFamily: '"Unbounded", sans-serif' }}
+              >
+                Popular Destinations
+              </h3>
             </div>
-          </div>
-        </div>
-      </main>
 
-      {/* Animations */}
-      <style>{`
-        .animate-fade-in-up {
-          opacity: 0;
-          transform: translateY(20px);
-          animation: fadeInUp 0.6s ease forwards;
-        }
-        .delay-200 { animation-delay: 0.2s; }
-        @keyframes fadeInUp {
-          to { opacity: 1; transform: none; }
-        }
-      `}</style>
-    </div>
+            <div className="flex flex-wrap justify-center gap-3 max-w-3xl mx-auto">
+              {popularDestinations.map((dest) => (
+                <motion.button
+                  key={dest}
+                  whileHover={{ scale: 1.05, y: -2 }}
+                  whileTap={{ scale: 0.98 }}
+                  onClick={() => setPref({ ...pref, destination: dest })}
+                  className="px-5 py-2.5 bg-white/80 backdrop-blur-md 
+                             rounded-full text-sm font-semibold text-gray-700
+                             hover:bg-orange-50 hover:text-orange-700
+                             transition-all duration-300 shadow-sm hover:shadow-md"
+                  style={{ fontFamily: '"Inter", sans-serif' }}
+                >
+                  {dest}
+                </motion.button>
+              ))}
+            </div>
+          </motion.div>
+
+        </motion.div>
+      </main>
+    </motion.div>
   );
 }
 
-/* 🔹 Reusable Dropdown Component */
-function Dropdown({ label, icon, options, value, open, onToggle, onSelect }) {
+// ──────────────────────────────────────────────────────────────
+//  DROPDOWN COMPONENT
+// ──────────────────────────────────────────────────────────────
+function CustomDropdown({ label, icon, options, value, placeholder, open, onToggle, onSelect }) {
   return (
-    <div className="relative flex-1">
-      <button
-        className="w-full bg-[#23232a] py-2 px-4 text-left rounded-xl text-gray-300 flex items-center justify-between border border-[#2d2d35] focus:border-purple-500 transition cursor-pointer hover:border-purple-400 active:scale-95"
-        onClick={onToggle}
+    <div className="relative">
+      <div className="flex items-center gap-2 mb-2">
+        <span className="text-orange-600">{icon}</span>
+        <label
+          className="text-xs font-bold tracking-wide text-gray-700 uppercase"
+          style={{ fontFamily: '"Unbounded", sans-serif' }}
+        >
+          {label}
+        </label>
+      </div>
+
+      <motion.button
         type="button"
+        onClick={onToggle}
+        whileHover={{ scale: 1.02, y: -2 }}
+        whileTap={{ scale: 0.98 }}
+        className={`
+          w-full bg-white/95 backdrop-blur-sm border-2 
+          px-4 sm:px-5 py-3.5 rounded-xl
+          flex items-center justify-between gap-2
+          text-sm font-semibold transition-all duration-300
+          ${open ? 'border-orange-400 shadow-lg' : 'border-gray-200 hover:border-gray-300'}
+          ${value ? 'text-gray-900' : 'text-gray-500'}
+        `}
+        style={{ fontFamily: '"Inter", sans-serif' }}
+        initial={{ opacity: 0, y: 15 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, type: 'spring', stiffness: 120 }}
       >
-        <span className="flex items-center">
-          {icon}
-          {value || label}
-        </span>
-        <FaChevronDown className="ml-2 text-xs" />
-      </button>
+        <span className="truncate text-left">{value || placeholder}</span>
+        <motion.div>
+          <ChevronDown className="w-4 h-4 text-orange-600 shrink-0" />
+        </motion.div>
+      </motion.button>
+
       {open && (
-        <div className="absolute left-0 right-0 mt-1 bg-[#19191c] border border-[#23232a] rounded-xl shadow-lg z-20 animate-fade-in">
-          {options.map(opt => (
-            <div
+        <motion.div
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.2 }}
+          className="absolute top-full left-0 right-0 mt-2 
+                     bg-white/98 backdrop-blur-xl
+                     border-2 border-gray-200 rounded-xl 
+                     shadow-2xl z-[999] 
+                     max-h-60 overflow-y-auto
+                     scrollbar-thin scrollbar-thumb-orange-400 scrollbar-track-gray-100"
+        >
+          {options.map((opt, idx) => (
+            <motion.div
               key={opt}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.2, delay: idx * 0.05 }}
               onClick={() => onSelect(opt)}
-              className="px-4 py-2 hover:bg-gradient-to-r hover:from-purple-600/40 hover:to-pink-500/40 cursor-pointer text-white transition"
+              className="px-4 sm:px-5 py-3 hover:bg-orange-50 cursor-pointer 
+                         text-gray-800 font-medium transition-colors
+                         first:rounded-t-xl last:rounded-b-xl
+                         border-b border-gray-100 last:border-0"
+              style={{ fontFamily: '"Inter", sans-serif' }}
+              whileHover={{ y: -6 }}
             >
               {opt}
-            </div>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
       )}
     </div>
   );

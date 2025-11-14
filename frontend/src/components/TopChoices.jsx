@@ -5,6 +5,7 @@ import Card from "./Card.jsx";
 import { setItinerary } from "../slices/itinerarySlice.js";
 import { setLastFetchedKey } from "../slices/preferencesSlice.js";
 import { generatePreferenceKey, shouldFetchData } from "../utils/cacheUtils.js"; 
+import { motion } from "framer-motion";
 
 function TopChoices() {
   const locationRouter = useLocation();
@@ -150,18 +151,40 @@ function TopChoices() {
 
   if (!recommendation) {
     return (
-      <div className="w-full min-h-screen flex flex-col items-center justify-center text-center text-gray-300 bg-black py-16 px-6">
-        <p className="text-lg md:text-xl">No recommendations found.</p>
-        <p className="text-sm text-gray-500 mt-2 mb-4">
+      <motion.div
+        className="w-full min-h-screen flex flex-col items-center justify-center text-center bg-white py-16 px-6"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ staggerChildren: 0.12, delayChildren: 0.18 }}
+      >
+        <motion.p
+          className="text-lg md:text-xl text-neutral-700"
+          initial={{ opacity: 0, y: 32 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, type: "spring", stiffness: 90 }}
+        >
+          No recommendations found.
+        </motion.p>
+        <motion.p
+          className="text-sm text-neutral-500 mt-2 mb-4"
+          initial={{ opacity: 0, y: 32 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, type: "spring", stiffness: 90, delay: 0.05 }}
+        >
           Available keys: {Object.keys(allRecommendations).length > 0 ? Object.keys(allRecommendations).slice(0, 3).join(", ") : "None"}
-        </p>
-        <button
+        </motion.p>
+        <motion.button
           onClick={() => navigate("/home")}
-          className="mt-6 px-5 py-3 bg-gradient-to-br from-blue-500 via-purple-600 to-pink-500 text-white font-medium rounded-xl shadow-lg hover:scale-105 transition"
+          className="mt-6 px-6 py-3 rounded-2xl font-semibold text-white bg-gradient-to-r from-orange-600 to-yellow-500 shadow-xl"
+          whileHover={{ scale: 1.06, y: -3 }}
+          transition={{ type: "spring", stiffness: 400, damping: 18 }}
+          initial={{ opacity: 0, y: 15 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.15, type: "spring", stiffness: 120 }}
         >
           Go Back to Search
-        </button>
-      </div>
+        </motion.button>
+      </motion.div>
     );
   }
 
@@ -172,43 +195,66 @@ function TopChoices() {
   }
 
   return (
-    <div className="w-full min-h-screen bg-black">
-      <div className="flex flex-col items-center gap-16 pt-8 pb-20 px-1 sm:px-5">
-        <section className="w-full">
-          <h2
-            className="font-extrabold bg-gradient-to-br from-blue-500 via-purple-600 to-pink-500 bg-clip-text text-transparent sm:text-3xl md:text-4xl tracking-tight drop-shadow-md mb-2 ml-4 text-3xl"
-            style={{
-              fontFamily: "'Stardos Stencil', 'Inter', sans-serif",
-              fontWeight: 700
-            }}
+    <motion.div
+      className="w-full min-h-screen bg-gradient-to-b from-white to-neutral-50"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ staggerChildren: 0.12, delayChildren: 0.18 }}
+    >
+      <div className="flex flex-col items-center gap-16 pt-10 pb-24 px-4 sm:px-6">
+        <motion.section
+          className="w-full max-w-5xl mx-auto"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.8, type: "spring", stiffness: 90 }}
+        >
+          <motion.h2
+            className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-neutral-900 mb-2"
+            style={{ fontFamily: '"Inter", sans-serif' }}
+            initial={{ opacity: 0, y: 32 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, type: "spring", stiffness: 90 }}
           >
-            <span className="text-white">In</span> {capitalize(userLocation)}
-          </h2>
-          <h2
-            className="text-3xl font-extrabold bg-gradient-to-br from-blue-500 via-purple-600 to-pink-500 bg-clip-text text-transparent sm:text-3xl md:text-4xl mb-13 tracking-tight drop-shadow-md  ml-4"
-            style={{
-              fontFamily: "'Stardos Stencil', 'Inter', sans-serif",
-              fontWeight: 700
-            }}
+            In <span className="bg-gradient-to-r from-orange-600 to-yellow-500 bg-clip-text text-transparent">{capitalize(userLocation)}</span>
+          </motion.h2>
+          <motion.h3
+            className="text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight text-neutral-800 mb-10"
+            style={{ fontFamily: '"Inter", sans-serif' }}
+            initial={{ opacity: 0, y: 32 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, type: "spring", stiffness: 90, delay: 0.06 }}
           >
-            <span className="text-3xl text-white"> Top Choices for </span> Your Trip
-          </h2>
-
-          <div className="w-full flex flex-col items-center gap-16 px-5">
+            Top Choices for Your Trip
+          </motion.h3>
+          <div className="w-full flex flex-col items-center gap-10 sm:gap-12">
             {recommendation.top_places.map((place) => (
-              <Card key={place.id} place={place} />
+              <motion.div
+                key={place.id}
+                initial={{ opacity: 0, scale: 0.94 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.7, type: "spring", stiffness: 80 }}
+                whileHover={{ y: -6 }}
+                className="w-full"
+              >
+                <Card place={place} />
+              </motion.div>
             ))}
           </div>
-        </section>
+        </motion.section>
 
         {/* Budget Stretch Upgrades Card */}
         {recommendation.budget_stretch_advisor && (
-          <section className="bg-neutral-900 border border-purple-600/20 rounded-2xl shadow-xl mx-auto mt-10 max-w-[420px] w-full p-6 flex flex-col gap-4">
+          <motion.section
+            className="bg-white/70 backdrop-blur-xl border border-pink-500/20 rounded-2xl shadow-xl mx-auto mt-10 max-w-[480px] w-full p-6 flex flex-col gap-4"
+            initial={{ opacity: 0, scale: 0.94 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.7, type: "spring", stiffness: 80 }}
+          >
             <div className="flex items-center gap-2 mb-2">
-              <span className="text-pink-400 text-xl">🌟</span>
-              <h3 className="font-bold text-lg sm:text-xl text-white drop-shadow">Budget Stretch Upgrades</h3>
+              <span className="text-pink-600 text-xl">🌟</span>
+              <h3 className="font-bold text-lg sm:text-xl text-neutral-900">Budget Stretch Upgrades</h3>
             </div>
-            <div className="text-sm text-gray-300 mb-2">
+            <div className="text-sm text-neutral-700 mb-2">
               <span className="text-pink-400 font-semibold">
                 {recommendation.budget_stretch_advisor.recommended_increase}
               </span>
@@ -216,29 +262,38 @@ function TopChoices() {
             </div>
             <div className="flex flex-col gap-3">
               {(recommendation.budget_stretch_advisor.upgrades || []).map((upg) => (
-                <div
+                <motion.div
                   key={upg.title}
-                  className="bg-black/60 border border-pink-300/20 rounded-xl shadow p-4 flex flex-col gap-1"
+                  className="bg-white/70 backdrop-blur-md border border-pink-300/30 rounded-xl shadow p-4 flex flex-col gap-1"
+                  initial={{ opacity: 0, scale: 0.94 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.7, type: "spring", stiffness: 80 }}
+                  whileHover={{ y: -6 }}
                 >
-                  <div className="font-semibold text-pink-200 text-base">
+                  <div className="font-semibold text-pink-600 text-base">
                     ✚ {upg.title}
                   </div>
-                  <div className="text-yellow-400 font-medium">{upg.extra_cost_per_person}</div>
-                  <div className="text-xs text-gray-400">{upg.what_you_get}</div>
-                </div>
+                  <div className="text-amber-600 font-medium">{upg.extra_cost_per_person}</div>
+                  <div className="text-xs text-neutral-600">{upg.what_you_get}</div>
+                </motion.div>
               ))}
             </div>
-          </section>
+          </motion.section>
         )}
 
         {/* Budget Cut Optimizer Card */}
         {recommendation.budget_cut_optimizer && (
-          <section className="bg-neutral-900 border border-green-500/20 rounded-2xl shadow-xl mx-auto mt-8 max-w-[420px] w-full p-6 flex flex-col gap-4">
+          <motion.section
+            className="bg-white/70 backdrop-blur-xl border border-green-500/20 rounded-2xl shadow-xl mx-auto mt-8 max-w-[480px] w-full p-6 flex flex-col gap-4"
+            initial={{ opacity: 0, scale: 0.94 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.7, type: "spring", stiffness: 80 }}
+          >
             <div className="flex items-center gap-2 mb-2">
-              <span className="text-green-400 text-xl">✂️</span>
-              <h3 className="font-bold text-lg sm:text-xl text-white drop-shadow">Budget Cut Optimizer</h3>
+              <span className="text-green-600 text-xl">✂️</span>
+              <h3 className="font-bold text-lg sm:text-xl text-neutral-900">Budget Cut Optimizer</h3>
             </div>
-            <div className="text-sm text-gray-300 mb-2">
+            <div className="text-sm text-neutral-700 mb-2">
               <span className="text-green-400 font-semibold">
                 {recommendation.budget_cut_optimizer.target_savings}
               </span>
@@ -246,47 +301,61 @@ function TopChoices() {
             </div>
             <div className="flex flex-col gap-3">
               {(recommendation.budget_cut_optimizer.swaps || []).map((swap, i) => (
-                <div
+                <motion.div
                   key={swap.replace + swap.with + i}
-                  className="bg-black/60 border border-green-300/20 rounded-xl shadow p-4 flex flex-col gap-1"
+                  className="bg-white/70 backdrop-blur-md border border-green-300/30 rounded-xl shadow p-4 flex flex-col gap-1"
+                  initial={{ opacity: 0, scale: 0.94 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.7, type: "spring", stiffness: 80 }}
+                  whileHover={{ y: -6 }}
                 >
                   <div className="text-xs">
-                    <span className="line-through text-red-300 mr-2">{swap.replace}</span>
-                    <span className="text-green-300 mx-1">→ {swap.with}</span>
-                    <span className="text-yellow-300">{swap.savings_per_person}</span>
+                    <span className="line-through text-red-500 mr-2">{swap.replace}</span>
+                    <span className="text-green-600 mx-1">→ {swap.with}</span>
+                    <span className="text-amber-600">{swap.savings_per_person}</span>
                   </div>
-                  <div className="text-xs text-gray-400">{swap.impact_on_experience}</div>
-                </div>
+                  <div className="text-xs text-neutral-600">{swap.impact_on_experience}</div>
+                </motion.div>
               ))}
             </div>
-          </section>
+          </motion.section>
         )}
 
         {/* Generate Itinerary Button */}
         <section className="w-full flex flex-col sm:flex-row justify-center items-center gap-3 sm:gap-4 mt-8 sm:mt-12 px-4">
-          <button
+          <motion.button
             onClick={() => navigate("/home/itinerary")}
-            className="w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-4 bg-gradient-to-r from-purple-600 to-pink-600 text-white font-bold rounded-2xl shadow-2xl hover:shadow-purple-500/25 hover:scale-105 transition-all duration-300 text-base sm:text-lg"
+            className="w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-4 bg-gradient-to-r from-orange-600 to-yellow-500 text-white font-bold rounded-2xl shadow-2xl text-base sm:text-lg"
+            whileHover={{ scale: 1.06, y: -3 }}
+            transition={{ type: "spring", stiffness: 400, damping: 18 }}
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.12, type: "spring", stiffness: 120 }}
           >
             🗺️ Generate Your Itinerary
-          </button>
+          </motion.button>
           
           {/* Force refresh button - only show in development */}
           {process.env.NODE_ENV === 'development' && (
-            <button
+            <motion.button
               onClick={() => {
                 // Clear cached data and force refetch
                 dispatch(setLastFetchedKey(null));
                 fetchItineraryIfNeeded();
               }}
-              className="w-full sm:w-auto px-4 sm:px-6 py-2 sm:py-4 bg-gradient-to-r from-orange-600 to-red-600 text-white font-bold rounded-2xl shadow-2xl hover:shadow-purple-500/25 hover:scale-105 transition-all duration-300 text-sm sm:text-base"
+              className="w-full sm:w-auto px-4 sm:px-6 py-2 sm:py-4 bg-gradient-to-r from-neutral-900 to-neutral-700 text-white font-bold rounded-2xl shadow-2xl text-sm sm:text-base"
+              whileHover={{ scale: 1.06, y: -3 }}
+              transition={{ type: "spring", stiffness: 400, damping: 18 }}
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.16, type: "spring", stiffness: 120 }}
             >
               🔄 Force Refresh
-            </button>
+            </motion.button>
           )}
         </section>
       </div>
-    </div>
+    </motion.div>
   );
 }
 

@@ -14,15 +14,48 @@ body {
 @font-face {
   font-family: 'Chillax';
   font-style: normal;
-  font-weight: 700;
-  src: url('./assets/Chillax_Complete/Fonts/WEB/Chillax-Bold.woff2') format('woff2');
+  font-weight: 200;
+  src: url('./assets/Chillax_Complete/Fonts/WEB/fonts/Chillax-Extralight.woff2') format('woff2');
   font-display: swap;
 }
+
+@font-face {
+  font-family: 'Chillax';
+  font-style: normal;
+  font-weight: 300;
+  src: url('./assets/Chillax_Complete/Fonts/WEB/fonts/Chillax-Light.woff2') format('woff2');
+  font-display: swap;
+}
+
 @font-face {
   font-family: 'Chillax';
   font-style: normal;
   font-weight: 400;
-  src: url('./assets/Chillax_Complete/Fonts/WEB/Chillax-Regular.woff2') format('woff2');
+  src: url('./assets/Chillax_Complete/Fonts/WEB/fonts/Chillax-Regular.woff2') format('woff2');
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Chillax';
+  font-style: normal;
+  font-weight: 500;
+  src: url('./assets/Chillax_Complete/Fonts/WEB/fonts/Chillax-Medium.woff2') format('woff2');
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Chillax';
+  font-style: normal;
+  font-weight: 600;
+  src: url('./assets/Chillax_Complete/Fonts/WEB/fonts/Chillax-Semibold.woff2') format('woff2');
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Chillax';
+  font-style: normal;
+  font-weight: 700;
+  src: url('./assets/Chillax_Complete/Fonts/WEB/fonts/Chillax-Bold.woff2') format('woff2');
   font-display: swap;
 }
 
@@ -30,5 +63,3 @@ body {
   0% { background-position: 0% center; }
   100% { background-position: 200% center; }
 }
-
-

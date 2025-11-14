@@ -44,25 +44,8 @@ export const store = configureStore({
     }),
 });
 
-// Debug: Log store creation
-console.log("Redux store created with reducers:", Object.keys(store.getState()));
+
 
 export const persistor = persistStore(store);
 
-// Debug logging for store state
-if (process.env.NODE_ENV === 'development') {
-  store.subscribe(() => {
-    const state = store.getState();
-    console.log('Redux Store State:', {
-      preferences: state.preferences,
-      recommendationKeys: Object.keys(state.recommendation.recommendations),
-      itineraryKeys: Object.keys(state.itinerary.itineraries),
-      itineraryCount: Object.keys(state.itinerary.itineraries).length
-    });
-  });
-  
-  // Debug persistence
-  persistor.subscribe(() => {
-    console.log('Persistence state:', persistor.getState());
-  });
-}
+

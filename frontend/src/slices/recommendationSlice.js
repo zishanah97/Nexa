@@ -11,7 +11,7 @@ const recommendationSlice = createSlice({
   reducers: {
     setRecommendation: (state, action) => {
       const { key, data } = action.payload;
-      console.log('Setting recommendation:', { key, data });
+
       state.recommendations[key] = data;
     },
     clearRecommendations: (state) => {

@@ -4,6 +4,7 @@ import { useDispatch } from "react-redux";
 import { setRecommendation } from "../slices/recommendationSlice";
 import { setLastFetchedKey } from "../slices/preferencesSlice";
 import axios from "axios";
+const API_BASE = import.meta.env.VITE_API_BASE_URL || "http://localhost:5000";
 
 const steps = [
   "Submitting your search preferences",
@@ -44,7 +45,7 @@ export default function LoaderPage() {
         
         // For backward compatibility, still get the full recommendation
         const response = await axios.post(
-         "http://localhost:5000/api/v1/recommendations",
+          `${API_BASE}/api/v1/recommendations`,
           { preferences }
         );
         console.log("API POST preferences:", preferences, "Response:", response.data, "prefKey:", prefKey);

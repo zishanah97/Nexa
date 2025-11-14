@@ -1,14 +1,18 @@
-import logo from '../assets/logo.png';
+import logo from '../../assets/logo.png';
+import { motion } from 'framer-motion';
 
 export default function Footer() {
   const year = new Date().getFullYear();
   return (
     <footer className="relative w-full bg-orange-50 border-t border-orange-200 pt-16 pb-8 md:pt-20 md:pb-10 overflow-hidden z-10">
       {/* Responsive giant watermark */}
-      <div
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 0.1 }}
+        transition={{ duration: 1 }}
         className={`
           absolute inset-x-0 pointer-events-none select-none flex items-end justify-center z-0
-          opacity-10 md:opacity-15
+          md:opacity-15
           bottom-[4rem] md:bottom-0
         `}
         aria-hidden="true"
@@ -22,7 +26,7 @@ export default function Footer() {
         }}
       >
         NEXA
-      </div>
+      </motion.div>
 
       {/* Main content with only logo + CTA; responsive, never crowded */}
       <div className="
@@ -35,13 +39,20 @@ export default function Footer() {
         gap-8 md:gap-0
       ">
         {/* Logo */}
-        <div className="flex items-center gap-3 w-full md:w-auto justify-center md:justify-start">
-          <img
+        <motion.div
+          initial={{ opacity: 0, x: -30 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.6 }}
+          className="flex items-center gap-3 w-full md:w-auto justify-center md:justify-start"
+        >
+          <motion.img
+            whileHover={{ scale: 1.1, rotate: 5 }}
             src={logo}
             alt="NEXA logo"
             className="w-10 h-10 md:w-14 md:h-14 rounded-full object-cover shadow"
           />
-          <span
+          <motion.span
+            whileHover={{ scale: 1.05 }}
             className="text-3xl md:text-5xl font-black tracking-widest"
             style={{
               fontFamily: '"Bebas Neue", sans-serif',
@@ -51,18 +62,22 @@ export default function Footer() {
             }}
           >
             NEXA
-          </span>
-        </div>
+          </motion.span>
+        </motion.div>
 
         {/* Single CTA Only */}
         <nav className="flex items-center justify-center w-full md:w-auto">
-          <a
+          <motion.a
+            initial={{ opacity: 0, x: 30 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.6 }}
+            whileHover={{ scale: 1.1, y: -2 }}
             href="/home"
             className="
-              bg-orange-500 hover:bg-orange-600 transition
+              bg-orange-500
               text-white px-8 py-3 rounded-full font-bold
               text-base md:text-lg
-              shadow-lg hover:shadow-xl
+              shadow-lg
             "
             style={{
               fontFamily: '"Inter", sans-serif',
@@ -71,15 +86,19 @@ export default function Footer() {
             }}
           >
             Try It
-          </a>
+          </motion.a>
         </nav>
       </div>
 
       {/* Copyright Centered, Responsive, Clean */}
-      <div
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, delay: 0.2 }}
         className="relative z-10 mt-6 flex items-center justify-center max-w-7xl mx-auto px-4"
       >
-        <div
+        <motion.div
+          whileHover={{ scale: 1.05 }}
           className="text-xs md:text-sm text-orange-600"
           style={{
             fontFamily: '"Inter", sans-serif',
@@ -88,13 +107,23 @@ export default function Footer() {
           }}
         >
           © {year} NEXA. All rights reserved · Delhi, India
-        </div>
-      </div>
+        </motion.div>
+      </motion.div>
 
       {/* Optional: Clean thin trust bar for desktop only, else keep footer ultra-minimal */}
-      <div className="hidden md:block absolute bottom-0 left-0 right-0 w-full text-center py-1 text-xs text-orange-700 bg-orange-100 opacity-90 z-20">
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 0.9 }}
+        transition={{ duration: 0.6, delay: 0.4 }}
+        className="hidden md:block absolute bottom-0 left-0 right-0 w-full text-center py-1 text-xs text-orange-700 bg-orange-100 z-20"
+      >
         Powered by AI · Uptime: 99.99% · Trusted by millions
-      </div>
+      </motion.div>
     </footer>
   );
 }
+
+
+
+
+

@@ -1,4 +1,3 @@
-
 import express from 'express'
 import cors from 'cors'
 import connect from './Db/connect.js'
@@ -22,17 +21,25 @@ app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1/user", userRoutes);
 app.use("/api/v1/recommendations", recommendationRoutes)
 
-
+app.get('/health', (req, res) => {
+  res.json({ status: 'ok' });
+});
 
 const start = async () => {
   try {
-    await connect(process.env.CONNECTION_STRING)
-    app.listen(PORT, () =>
-      console.log(`Server is listening on port http://localhost:${PORT}...`)
-    );
+    const conn = process.env.CONNECTION_STRING;
+    if (conn) {
+      await connect(conn);
+      console.log('Database connected');
+    } else {
+      console.warn('No CONNECTION_STRING provided. Starting server without DB.');
+    }
   } catch (error) {
-    console.log(error.message);
+    console.warn('DB connection failed, starting server anyway:', error.message);
   }
+  app.listen(PORT, () =>
+    console.log(`Server is listening on http://localhost:${PORT}`)
+  );
 };
 
 start();

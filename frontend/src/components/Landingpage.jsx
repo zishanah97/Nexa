@@ -2,9 +2,9 @@ import React from 'react';
 import { ArrowRight } from 'lucide-react';
 import { NavLink } from 'react-router-dom';
 import logo from '../assets/logo.png';
-import BentoGrid from './BentoGrid';
-import HowItWorks from './Working';
-import Footer from './Footer.jsx';
+import BentoGrid from './sections/BentoGrid.jsx';
+import HowItWorks from './sections/Working.jsx';
+import Footer from './layout/Footer.jsx';
 
 
 function Landingpage() {
