@@ -3,7 +3,6 @@ import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { NavLink, useLocation } from "react-router-dom";
 import { Search, MapPin, Route, Menu, X } from "lucide-react";
-import logo from "../assets/logo.png";
 
 export default function Navbar() {
   const { pathname } = useLocation();
@@ -43,54 +42,60 @@ export default function Navbar() {
         initial={{ opacity: 0, y: 60 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-        className="relative w-full px-4 pt-3 pb-2 md:pb-3 lg:w-[60%] mx-auto flex items-center justify-between gap-3 rounded-full bg-white/95 backdrop-blur-xl border border-white/40 shadow-lg md:px-6 md:py-3.5 shadow-xl/30 inset-shadow-xs mt-2 mb-6"
+        className="relative w-full px-4 pt-3 pb-2 md:pb-3 lg:w-[60%] mx-auto flex items-center justify-between gap-3 rounded-full bg-white/90 backdrop-blur-xl border border-white/60 shadow-lg md:px-6 md:py-3.5 shadow-xl/30 inset-shadow-xs mt-2 mb-6"
       >
-          {/* === LOGO === */}
+          {/* === LOGO / WORDMARK === */}
           <NavLink
             to="/"
-            className="flex shrink-0 items-center gap-2.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 rounded-full"
+            className="flex shrink-0 items-center gap-3 focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-900 focus-visible:ring-offset-2 focus-visible:ring-offset-transparent rounded-full"
             aria-label="NEXA Home"
           >
-            <motion.img
-              whileHover={{ scale: 1.1, rotate: 5 }}
-              whileTap={{ scale: 0.95 }}
-              transition={{ type: "spring", stiffness: 400, damping: 17 }}
-              src={logo}
-              alt="NEXA Logo"
-              className="h-9 w-9 rounded-full object-cover md:h-10 md:w-10"
-              loading="eager"
-            />
             <motion.span
-              className="bg-gradient-to-r from-orange-600 to-yellow-500 bg-clip-text 
-                         text-xl font-black text-transparent md:text-2xl"
-              style={{ fontFamily: "'Stardos Stencil', cursive" }}
+              whileHover={{ scale: 1.04 }}
+              whileTap={{ scale: 0.97 }}
+              className="flex h-8 w-8 items-center justify-center rounded-[6px] border border-neutral-200 text-[11px] font-semibold tracking-[0.12em] text-neutral-800 bg-gradient-to-br from-neutral-50 to-neutral-100"
+              style={{ fontFamily: '"Inter", sans-serif' }}
+            >
+              NX
+            </motion.span>
+            <span
+              className="text-base md:text-lg font-semibold tracking-tight text-neutral-900"
+              style={{ fontFamily: '"Inter", sans-serif', letterSpacing: "-0.02em" }}
             >
               NEXA
-            </motion.span>
+            </span>
           </NavLink>
 
           {/* === DESKTOP TABS (≥1024px) === */}
           {!isLanding && (
-            <nav className="hidden items-center gap-1 lg:flex" aria-label="Main navigation">
+            <nav className="hidden lg:flex items-center gap-6" aria-label="Main navigation">
               {tabs.map(({ Icon, label, to }) => {
                 const active = pathname === to;
                 return (
                   <NavLink key={to} to={to} className="relative">
                     {() => (
-                      <motion.button
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.97 }}
-                        transition={{ type: "spring", stiffness: 400, damping: 25 }}
-                        className={`flex items-center gap-2 rounded-full px-4 py-2.5 text-sm font-semibold transition-colors ${active
-                            ? "bg-gradient-to-r from-orange-600 to-yellow-500 text-white shadow-md"
-                            : "text-gray-700 hover:bg-gray-100/80"
+                      <>
+                        <motion.button
+                          whileHover={{ scale: 1.02, y: -1 }}
+                          whileTap={{ scale: 0.98 }}
+                          transition={{ type: "spring", stiffness: 320, damping: 26 }}
+                          className={`flex items-center gap-2 rounded-full px-4 py-2.5 text-sm transition-all duration-200 cursor-pointer text-neutral-700 font-medium hover:bg-neutral-100 ${
+                            active ? "text-neutral-900 font-semibold" : ""
                           }`}
-                        style={{ fontFamily: '"Inter", sans-serif' }}
-                        aria-current={active ? "page" : undefined}
-                      >
-                        <Icon className="h-4 w-4" strokeWidth={2.5} />
-                        <span>{label}</span>
-                      </motion.button>
+                          style={{ fontFamily: '"Inter", sans-serif' }}
+                          aria-current={active ? "page" : undefined}
+                        >
+                          <Icon className="h-4 w-4" strokeWidth={2.2} />
+                          <span>{label}</span>
+                        </motion.button>
+                        {active && (
+                          <motion.div
+                            layoutId="desktopActiveTab"
+                            className="absolute left-1/2 -bottom-1 h-[3px] w-6 -translate-x-1/2 rounded-full bg-[#171717]"
+                            transition={{ type: "spring", stiffness: 400, damping: 28 }}
+                          />
+                        )}
+                      </>
                     )}
                   </NavLink>
                 );
@@ -102,11 +107,11 @@ export default function Navbar() {
           <div className="flex shrink-0 items-center gap-2">
             {!isLanding && (
               <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
+                whileHover={{ scale: 1.02, y: -1 }}
+                whileTap={{ scale: 0.98 }}
                 onClick={() => setMobileOpen((prev) => !prev)}
-                className="lg:hidden rounded-full p-2.5 text-gray-700 transition-colors hover:bg-gray-100
-                           focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-500"
+                className="lg:hidden rounded-full p-2.5 text-neutral-700 transition-colors hover:bg-neutral-100
+                           focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-900 focus-visible:ring-offset-2 focus-visible:ring-offset-transparent"
                 aria-label={mobileOpen ? "Close menu" : "Open menu"}
                 aria-expanded={mobileOpen}
               >
@@ -162,22 +167,23 @@ export default function Navbar() {
               {/* Header */}
               <div className="sticky top-0 z-10 flex items-center justify-between border-b border-gray-200 bg-white/95 backdrop-blur-sm px-5 py-4">
                 <div className="flex items-center gap-2.5">
-                  <img
-                    src={logo}
-                    alt="NEXA"
-                    className="h-9 w-9 rounded-full object-cover"
-                  />
                   <span
-                    className="bg-gradient-to-r from-orange-600 to-yellow-500 bg-clip-text text-xl font-black text-transparent"
-                    style={{ fontFamily: "'Stardos Stencil', cursive" }}
+                    className="flex h-8 w-8 items-center justify-center rounded-full border border-neutral-200 text-[11px] font-semibold tracking-[0.12em] text-neutral-800 bg-white/80"
+                    style={{ fontFamily: '"Inter", sans-serif' }}
+                  >
+                    NX
+                  </span>
+                  <span
+                    className="text-base font-semibold tracking-tight text-neutral-900"
+                    style={{ fontFamily: '"Inter", sans-serif', letterSpacing: "-0.02em" }}
                   >
                     NEXA
                   </span>
                 </div>
                 <button
                   onClick={() => setMobileOpen(false)}
-                  className="rounded-full p-2 hover:bg-gray-100 transition-colors
-                             focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-500"
+                  className="rounded-full p-2 hover:bg-neutral-100 transition-colors
+                             focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-900 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
                   aria-label="Close menu"
                 >
                   <X className="h-5 w-5 text-gray-600" strokeWidth={2.5} />
@@ -201,10 +207,11 @@ export default function Navbar() {
                     >
                       <NavLink
                         to={to}
-                        className={`flex items-center gap-3 rounded-xl px-4 py-3.5 text-sm font-semibold transition-all ${active
-                            ? "bg-gradient-to-r from-orange-600 to-yellow-500 text-white shadow-lg"
-                            : "text-gray-700 hover:bg-gray-100"
-                          }`}
+                        className={`flex items-center gap-3 rounded-xl px-4 py-3.5 text-sm font-medium transition-all ${
+                          active
+                            ? "bg-neutral-900 text-white shadow-sm"
+                            : "text-neutral-700 hover:bg-neutral-100"
+                        }`}
                         style={{ fontFamily: '"Inter", sans-serif' }}
                         aria-current={active ? "page" : undefined}
                       >
@@ -226,24 +233,6 @@ export default function Navbar() {
                   );
                 })}
               </nav>
-
-              {/* Footer */}
-              <div className="sticky bottom-0 border-t border-gray-200 bg-white/95 backdrop-blur-sm p-5">
-                <NavLink to="/" className="block" onClick={() => setMobileOpen(false)}>
-                  <motion.button
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                    className="w-full rounded-xl bg-gray-900 py-3.5 text-sm font-bold text-white shadow-lg transition-all hover:bg-gray-800 hover:shadow-xl
-                               focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 focus-visible:ring-offset-2"
-                    style={{ fontFamily: '"Inter", sans-serif' }}
-                  >
-                    Back to Home
-                  </motion.button>
-                </NavLink>
-                <p className="mt-3 text-center text-xs text-gray-500">
-                  Made with love by NEXA
-                </p>
-              </div>
             </motion.aside>
           </>
         )}

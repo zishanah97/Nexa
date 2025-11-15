@@ -183,7 +183,6 @@ function TopChoices() {
           onClick={() => navigate("/home")}
           className="mt-6 px-6 py-3 rounded-2xl font-semibold text-white bg-gradient-to-r from-orange-600 to-yellow-500 shadow-xl"
           whileHover={{ scale: 1.06, y: -3 }}
-          transition={{ type: "spring", stiffness: 400, damping: 18 }}
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.15, type: "spring", stiffness: 120 }}
@@ -251,7 +250,7 @@ function TopChoices() {
       animate={{ opacity: 1 }}
       transition={{ staggerChildren: 0.12, delayChildren: 0.18 }}
     >
-      <div className="min-h-screen w-full relative">
+      <div className="w-full relative">
 
         <motion.div
           className="absolute inset-0 z-0"
@@ -346,7 +345,7 @@ function TopChoices() {
                 Curated places that match your days, budget, and travel style.
               </motion.p>
             </div>
-            <div className="w-full grid grid-cols-[repeat(auto-fit,minmax(340px,1fr))] gap-8">
+            <div className="w-full grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6 sm:gap-8">
               {recommendation.top_places.map((place, idx) => (
                 <motion.div
                   key={place.id}
@@ -470,7 +469,6 @@ function TopChoices() {
                 }}
                 className="w-full sm:w-auto px-4 sm:px-6 py-2 sm:py-4 bg-gradient-to-r from-neutral-900 to-neutral-700 text-white font-bold rounded-2xl shadow-2xl text-sm sm:text-base cursor-pointer"
                 whileHover={{ scale: 1.06, y: -3 }}
-                transition={{ type: "spring", stiffness: 400, damping: 18 }}
                 initial={{ opacity: 0, y: 15 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.16, type: "spring", stiffness: 120 }}
