@@ -43,9 +43,7 @@ export default function Navbar() {
         initial={{ opacity: 0, y: 60 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-        className="relative w-full px-4 pt-3 pb-2 md:pb-3 lg:w-[60%] mx-auto flex items-center justify-between gap-3 rounded-full bg-white/95 backdrop-blur-xl border border-white/40 shadow-lg md:px-6 md:py-3.5
-        shadow-xl/30 inset-shadow-xs mb-20 mt-2"
-      
+        className="relative w-full px-4 pt-3 pb-2 md:pb-3 lg:w-[60%] mx-auto flex items-center justify-between gap-3 rounded-full bg-white/95 backdrop-blur-xl border border-white/40 shadow-lg md:px-6 md:py-3.5 shadow-xl/30 inset-shadow-xs mt-2 mb-6"
       >
           {/* === LOGO === */}
           <NavLink
@@ -78,17 +76,17 @@ export default function Navbar() {
                 const active = pathname === to;
                 return (
                   <NavLink key={to} to={to} className="relative">
-                    {({ isActive }) => (
+                    {() => (
                       <motion.button
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.97 }}
                         transition={{ type: "spring", stiffness: 400, damping: 25 }}
-                        className={`flex items-center gap-2 rounded-full px-4 py-2.5 text-sm font-semibold transition-colors ${isActive
+                        className={`flex items-center gap-2 rounded-full px-4 py-2.5 text-sm font-semibold transition-colors ${active
                             ? "bg-gradient-to-r from-orange-600 to-yellow-500 text-white shadow-md"
                             : "text-gray-700 hover:bg-gray-100/80"
                           }`}
                         style={{ fontFamily: '"Inter", sans-serif' }}
-                        aria-current={isActive ? "page" : undefined}
+                        aria-current={active ? "page" : undefined}
                       >
                         <Icon className="h-4 w-4" strokeWidth={2.5} />
                         <span>{label}</span>
@@ -100,29 +98,8 @@ export default function Navbar() {
             </nav>
           )}
 
-          {/* === RIGHT SIDE: CTA + HAMBURGER === */}
+          {/* === RIGHT SIDE: HAMBURGER (MOBILE) === */}
           <div className="flex shrink-0 items-center gap-2">
-            {/* CTA Button */}
-            <NavLink to={isLanding ? "/home" : "/"}>
-              <motion.button
-                whileHover={{ scale: 1.06 }}
-                whileTap={{ scale: 0.96 }}
-                transition={{ type: "spring", stiffness: 400, damping: 25 }}
-                className="bg-gradient-to-r from-orange-600 to-yellow-500 
-                           rounded-full px-4 py-2 text-sm font-bold text-white shadow-md 
-                           transition-shadow hover:shadow-lg
-                           focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 focus-visible:ring-offset-2
-                           md:px-5 md:py-2.5"
-                style={{ fontFamily: '"Inter", sans-serif' }}
-              >
-                <span className="hidden sm:inline">
-                  {isLanding ? "Get Started" : "Back"}
-                </span>
-                <span className="sm:hidden">{isLanding ? "Go" : "Back"}</span>
-              </motion.button>
-            </NavLink>
-
-            {/* Hamburger (Mobile Only) */}
             {!isLanding && (
               <motion.button
                 whileHover={{ scale: 1.05 }}

@@ -34,17 +34,11 @@ const priceOptions = [
 
 const popularDestinations = [
   "Goa",
-  "Jaipur",
+  "Agra",
   "Leh-Ladakh",
-  "Kerala Backwaters",
   "Rishikesh",
   "Manali",
-  "Andaman & Nicobar",
-  "Udaipur",
-  "Varanasi",
-  "Rann of Kutch",
-  "Coorg",
-  "Munnar"
+  "Varanasi"
 ];
 
 // ──────────────────────────────────────────────────────────────
@@ -96,52 +90,50 @@ export default function Home() {
 
   return (
     <motion.div
-      className="min-h-screen w-full bg-white overflow-x-hidden relative "
+      className="min-h-screen w-full relative bg-white overflow-x-hidden"
     >
 
-      {/* Dashed Top Fade Grid */}
+      {/* Dashed Grid Background */}
       <div
-        className="absolute inset-0 z-0 w-full h-full"
+        className="absolute inset-0 z-0"
         style={{
           backgroundImage: `
-        linear-gradient(to right, #e7e5e4 1px, transparent 1px),
-        linear-gradient(to bottom, #e7e5e4 1px, transparent 1px)
+        linear-gradient(to right, rgba(0,0,0,0.04) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(0,0,0,0.04) 1px, transparent 1px)
       `,
           backgroundSize: "20px 20px",
           backgroundPosition: "0 0, 0 0",
           maskImage: `
         repeating-linear-gradient(
-              to right,
-              black 0px,
-              black 3px,
-              transparent 3px,
-              transparent 8px
-            ),
-            repeating-linear-gradient(
-              to bottom,
-              black 0px,
-              black 3px,
-              transparent 3px,
-              transparent 8px
-            ),
-            radial-gradient(ellipse 80% 70% at 50% -20%, #000 70%, transparent 100%)
+          to right,
+          black 0px,
+          black 3px,
+          transparent 3px,
+          transparent 8px
+        ),
+        repeating-linear-gradient(
+          to bottom,
+          black 0px,
+          black 3px,
+          transparent 3px,
+          transparent 8px
+        )
       `,
           WebkitMaskImage: `
- repeating-linear-gradient(
-              to right,
-              black 0px,
-              black 3px,
-              transparent 3px,
-              transparent 8px
-            ),
-            repeating-linear-gradient(
-              to bottom,
-              black 0px,
-              black 3px,
-              transparent 3px,
-              transparent 8px
-            ),
-            radial-gradient(ellipse 80% 70% at 50% -20%, #000 70%, transparent 100%)
+        repeating-linear-gradient(
+          to right,
+          black 0px,
+          black 3px,
+          transparent 3px,
+          transparent 8px
+        ),
+        repeating-linear-gradient(
+          to bottom,
+          black 0px,
+          black 3px,
+          transparent 3px,
+          transparent 8px
+        )
       `,
           maskComposite: "intersect",
           WebkitMaskComposite: "source-in",
@@ -152,35 +144,114 @@ export default function Home() {
 
 
       {/* MAIN CONTENT */}
-      <main className="relative  w-full px-4 sm:px-6 lg:px-0 pt-20 md:pt-24 pb-16 min-h-[85vh] flex items-center justify-center">
+      <main className="relative w-full px-4 sm:px-6 lg:px-0 pt-4 md:pt-10 pb-16 min-h-[85vh] flex items-center justify-center">
         <motion.div
           className="max-w-5xl mx-auto w-full"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ staggerChildren: 0.15, delayChildren: 0.2 }}
+          transition={{ staggerChildren: 0.25, delayChildren: 0.10 }}
         >
 
-          
-          <motion.div className="text-center mb-12 lg:mb-16" initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, type: "spring", stiffness: 100 }}>
-            <motion.h1 className="flex flex-col items-center gap-0 mb-6" style={{ lineHeight: '1' }} initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, type: "spring", stiffness: 100 }}>
-              <motion.span className="font-black tracking-tight text-5xl sm:text-7xl md:text-8xl lg:text-9xl text-black" style={{ fontFamily: '"Bebas Neue", cursive', display: 'inline-block' }} initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, type: "spring", stiffness: 100 }}>
+          {/* HERO */}
+          <motion.div
+            className="text-center mb-6 sm:mb-8"
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, type: "spring", stiffness: 100 }}
+          >
+            <motion.h1
+              className="flex flex-col items-center gap-0 mb-4 sm:mb-5"
+              style={{ lineHeight: "1" }}
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, type: "spring", stiffness: 100 }}
+            >
+              <motion.span
+                className="font-black tracking-tight text-4xl sm:text-6xl md:text-7xl lg:text-8xl text-black"
+                style={{ fontFamily: '"Bebas Neue", cursive', display: "inline-block" }}
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.7, type: "spring", stiffness: 100 }}
+              >
                 Where Dreams
               </motion.span>
-              <motion.span className="bg-gradient-to-r from-orange-600 via-orange-500 to-yellow-400 bg-clip-text text-transparent font-bold text-5xl sm:text-7xl md:text-8xl lg:text-9xl" style={{ fontFamily: '"Playfair Display", serif', display: 'inline-block' }} initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, type: "spring", stiffness: 100, delay: 0.05 }}>
+              <motion.span
+                className="bg-gradient-to-r from-orange-600 via-orange-500 to-yellow-400 bg-clip-text text-transparent font-bold text-4xl sm:text-6xl md:text-7xl lg:text-8xl"
+                style={{ fontFamily: '"Playfair Display", serif', display: "inline-block" }}
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.7, type: "spring", stiffness: 100, delay: 0.05 }}
+              >
                 TAKE FLIGHT
               </motion.span>
             </motion.h1>
-            <motion.p className="text-base sm:text-lg md:text-xl text-gray-700 max-w-2xl mx-auto font-medium px-4" style={{ fontFamily: '"Montserrat", sans-serif', lineHeight: 1.7, letterSpacing: '0.01em', fontWeight: 500 }} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.1 }}>
-              Tell us your{' '}
-              <motion.span className="text-orange-600 inline-block" style={{ fontFamily: '"Lobster", cursive', fontWeight: 700 }} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.15 }} whileHover={{ scale: 1.15 }}>
+            <motion.p
+              className="text-xs sm:text-sm md:text-base text-gray-700 max-w-xl mx-auto font-medium px-4"
+              style={{ fontFamily: '"Montserrat", sans-serif', lineHeight: 1.7, letterSpacing: "0.01em" }}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.1 }}
+            >
+              Tell us your
+              <motion.span
+                className="text-orange-600 inline-block ml-1"
+                style={{ fontFamily: '"Lobster", cursive', fontWeight: 700 }}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.15 }}
+                whileHover={{ scale: 1.05 }}
+              >
                 destination & vibe
               </motion.span>
-              {' '}— we'll craft the perfect journey
+              — we'll craft the perfect journey.
             </motion.p>
           </motion.div>
 
+          {/* POPULAR DESTINATIONS */}
+          <motion.div
+            className="text-center mb-5 sm:mb-7"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+          >
+            <div className="flex items-center justify-center gap-1.5 mb-4 sm:mb-6 sm:text-sm">
+              <TrendingUp className="w-3 h-3 sm:w-4 sm:h-4 text-orange-600" />
+              <h4
+                className="text-xs sm:text-sm font-medium text-gray-700 uppercase tracking-wider"
+                style={{ fontFamily: '"Unbounded", sans-serif' }}
+              >
+                Popular Destinations
+              </h4>
+            </div>
+
+            <div className="flex flex-wrap justify-center gap-x-3 gap-y-2 max-w-2xl mx-auto">
+              {popularDestinations.map((dest) => (
+                <motion.button
+                  key={dest}
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.98 }}
+                  onClick={() => setPref({ ...pref, destination: dest })}
+                  className="group px-4 py-2 sm:px-5 sm:py-2.5 bg-white/80 backdrop-blur-md relative
+                             rounded-full text-xs sm:text-sm font-semibold text-gray-700
+                             hover:bg-orange-50 hover:text-orange-700
+                             transition-all duration-300 shadow-sm hover:shadow-md"
+                  style={{ fontFamily: '"Inter", sans-serif' }}
+                >
+                  {dest}
+                  <span className="pointer-events-none absolute bottom-0 w-[88%] left-1/2 -translate-x-1/2 h-[2px] bg-gradient-to-r from-transparent via-amber-600 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                  <span className="pointer-events-none absolute top-0 w-[88%] left-1/2 -translate-x-1/2 h-[2px] bg-gradient-to-r from-transparent via-amber-500 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                </motion.button>
+              ))}
+            </div>
+          </motion.div>
+
           {/* SEARCH FORM */}
-          <motion.div className="w-full max-w-4xl mx-auto mb-12" initial={{ opacity: 0, scale: 0.92 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.6, type: "spring", stiffness: 90 }}>
+          <motion.div
+            className="w-full mt-6 sm:mt-8 max-w-4xl mx-auto mb-10 sm:mb-12 "
+            initial={{ opacity: 0, scale: 0.92 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.6, type: "spring", stiffness: 90 }}
+          >
             <form
               onSubmit={(e) => {
                 e.preventDefault();
@@ -194,7 +265,7 @@ export default function Home() {
                 className={`
                   relative bg-white/90 backdrop-blur-2xl 
                   rounded-3xl p-6 sm:p-8 lg:p-10 overflow-visible
-                  shadow-2xl transition-all duration-300
+                  shadow-[0_20px_40px_rgba(0,0,0,0.08)] transition-all duration-300
                   border-2
                   ${focused ? 'border-orange-400' : 'border-transparent'}
                 `}
@@ -212,19 +283,19 @@ export default function Home() {
                   </div>
                   <motion.input
                     type="text"
-                    placeholder="Where to? (e.g., Paris, Bali, Tokyo...)"
+                    placeholder="Where to? (e.g., Goa, Manali, Varanasi...)"
                     className="w-full bg-white/95 backdrop-blur-sm text-gray-900 placeholder-gray-500 
                                px-5 sm:px-6 py-4 text-base sm:text-lg rounded-2xl 
                                outline-none border-2 border-gray-200
-                               focus:border-orange-400 focus:shadow-lg 
+                               focus:border-orange-400 focus:shadow-lg focus:ring-2 focus:ring-[#FF6B00] focus:ring-offset-1 
                                transition-all duration-300 font-medium"
                     style={{ fontFamily: '"Inter", sans-serif' }}
                     value={pref.destination}
                     onChange={(e) => setPref({ ...pref, destination: e.target.value })}
                     onFocus={() => setFocused(true)}
                     onBlur={() => setFocused(false)}
-                    initial={{ opacity: 0, y: 15 }}
-                    animate={{ opacity: 1, y: 0 }}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
                     transition={{ duration: 0.5, delay: 0.1, type: "spring", stiffness: 120 }}
                   />
                 </div>
@@ -236,7 +307,7 @@ export default function Home() {
                     icon={<Calendar className="w-5 h-5" />}
                     options={dayOptions}
                     value={pref.days}
-                    placeholder="Select days"
+                    placeholder="How many days?"
                     open={open.days}
                     onToggle={() => setOpen({ days: !open.days, people: false, price: false })}
                     onSelect={(v) => {
@@ -279,15 +350,15 @@ export default function Home() {
                 <motion.button
                   type="submit"
                   disabled={loading || !isFormValid}
-                  initial={{ opacity: 0, y: 15 }}
-                  animate={{ opacity: 1, y: 0 }}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
                   transition={{ duration: 0.5, delay: 0.3, type: "spring", stiffness: 120 }}
-                  whileHover={isFormValid ? { scale: 1.05, y: -2 } : {}}
+                  whileHover={isFormValid ? { scale: 1.05 } : {}}
                   whileTap={isFormValid ? { scale: 0.98 } : {}}
                   className={`
                     group w-full relative overflow-hidden
                     bg-black text-white 
-                    font-bold px-8 py-4 sm:py-5 rounded-full
+                    font-bold px-8 py-3.5 sm:py-4 rounded-full
                     text-lg sm:text-xl shadow-xl
                     flex items-center justify-center gap-3
                     transition-all duration-300
@@ -315,37 +386,6 @@ export default function Home() {
                 </motion.button>
               </motion.div>
             </form>
-          </motion.div>
-
-          {/* POPULAR DESTINATIONS */}
-          <motion.div className="text-center" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.2 }}>
-            <div className="flex items-center justify-center gap-2 mb-6">
-              <TrendingUp className="w-5 h-5 text-orange-600" />
-              <h3
-                className="text-sm sm:text-base font-bold text-gray-700 uppercase tracking-wider"
-                style={{ fontFamily: '"Unbounded", sans-serif' }}
-              >
-                Popular Destinations
-              </h3>
-            </div>
-
-            <div className="flex flex-wrap justify-center gap-3 max-w-3xl mx-auto">
-              {popularDestinations.map((dest) => (
-                <motion.button
-                  key={dest}
-                  whileHover={{ scale: 1.05, y: -2 }}
-                  whileTap={{ scale: 0.98 }}
-                  onClick={() => setPref({ ...pref, destination: dest })}
-                  className="px-5 py-2.5 bg-white/80 backdrop-blur-md 
-                             rounded-full text-sm font-semibold text-gray-700
-                             hover:bg-orange-50 hover:text-orange-700
-                             transition-all duration-300 shadow-sm hover:shadow-md"
-                  style={{ fontFamily: '"Inter", sans-serif' }}
-                >
-                  {dest}
-                </motion.button>
-              ))}
-            </div>
           </motion.div>
 
         </motion.div>
@@ -386,8 +426,8 @@ function CustomDropdown({ label, icon, options, value, placeholder, open, onTogg
           ${value ? 'text-gray-900' : 'text-gray-500'}
         `}
         style={{ fontFamily: '"Inter", sans-serif' }}
-        initial={{ opacity: 0, y: 15 }}
-        animate={{ opacity: 1, y: 0 }}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
         transition={{ duration: 0.5, type: 'spring', stiffness: 120 }}
       >
         <span className="truncate text-left">{value || placeholder}</span>
