@@ -4,7 +4,7 @@ import { useDispatch } from "react-redux";
 import { setRecommendation } from "../slices/recommendationSlice";
 import { setLastFetchedKey } from "../slices/preferencesSlice";
 import axios from "axios";
-const API_BASE = import.meta.env.VITE_API_BASE_URL || "http://localhost:5000";
+const API_BASE = "https://nexa-5.onrender.com";
 
 const steps = [
   "Submitting your search preferences",

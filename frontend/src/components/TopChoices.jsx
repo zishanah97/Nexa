@@ -7,7 +7,7 @@ import { setLastFetchedKey } from "../slices/preferencesSlice.js";
 import { generatePreferenceKey, shouldFetchData } from "../utils/cacheUtils.js"; 
 import { motion } from "framer-motion";
 
-const API_BASE = import.meta.env.VITE_API_BASE_URL || "http://localhost:5000";
+const API_BASE = "https://nexa-5.onrender.com";
 
 function TopChoices() {
   const locationRouter = useLocation();

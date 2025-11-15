@@ -7,7 +7,7 @@ import { setItinerary, clearItinerary } from "../slices/itinerarySlice.js";
 import { setPreferences } from "../slices/preferencesSlice.js";
 import { generatePreferenceKey } from "../utils/cacheUtils.js";
 
-const API_BASE = import.meta.env.VITE_API_BASE_URL || "http://localhost:5000";
+const API_BASE = "https://nexa-5.onrender.com";
 
 export default function Itinerary() {
   const preferences = useSelector((state) => state.preferences);
