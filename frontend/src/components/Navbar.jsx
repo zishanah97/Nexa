@@ -39,26 +39,14 @@ export default function Navbar() {
 
   return (
     <>
-      {/* ====================== MAIN NAVBAR ====================== */}
-      <motion.header
-        initial={{ opacity: 0, y: -20 }}
+      <motion.div
+        initial={{ opacity: 0, y: 60 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-        className="sticky top-0 z-50 w-full px-4 pt-3 pb-2 md:pb-3"
-        style={{
-          paddingTop: "max(env(safe-area-inset-top), 0.75rem)",
-        }}
+        transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+        className="relative w-full px-4 pt-3 pb-2 md:pb-3 lg:w-[60%] mx-auto flex items-center justify-between gap-3 rounded-full bg-white/95 backdrop-blur-xl border border-white/40 shadow-lg md:px-6 md:py-3.5
+        shadow-xl/30 inset-shadow-xs mb-20 mt-2"
+      
       >
-        <div
-          className="mx-auto flex max-w-7xl items-center justify-between gap-3 
-                     rounded-full bg-white/95 backdrop-blur-xl 
-                     px-4 py-3 shadow-lg border border-white/40
-                     md:px-6 md:py-3.5"
-          style={{
-            backdropFilter: "blur(16px)",
-            WebkitBackdropFilter: "blur(16px)",
-          }}
-        >
           {/* === LOGO === */}
           <NavLink
             to="/"
@@ -95,11 +83,10 @@ export default function Navbar() {
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.97 }}
                         transition={{ type: "spring", stiffness: 400, damping: 25 }}
-                        className={`flex items-center gap-2 rounded-full px-4 py-2.5 text-sm font-semibold transition-colors ${
-                          isActive
+                        className={`flex items-center gap-2 rounded-full px-4 py-2.5 text-sm font-semibold transition-colors ${isActive
                             ? "bg-gradient-to-r from-orange-600 to-yellow-500 text-white shadow-md"
                             : "text-gray-700 hover:bg-gray-100/80"
-                        }`}
+                          }`}
                         style={{ fontFamily: '"Inter", sans-serif' }}
                         aria-current={isActive ? "page" : undefined}
                       >
@@ -159,8 +146,7 @@ export default function Navbar() {
               </motion.button>
             )}
           </div>
-        </div>
-      </motion.header>
+      </motion.div>
 
       {/* ====================== MOBILE DRAWER ====================== */}
       <AnimatePresence mode="wait">
@@ -238,11 +224,10 @@ export default function Navbar() {
                     >
                       <NavLink
                         to={to}
-                        className={`flex items-center gap-3 rounded-xl px-4 py-3.5 text-sm font-semibold transition-all ${
-                          active
+                        className={`flex items-center gap-3 rounded-xl px-4 py-3.5 text-sm font-semibold transition-all ${active
                             ? "bg-gradient-to-r from-orange-600 to-yellow-500 text-white shadow-lg"
                             : "text-gray-700 hover:bg-gray-100"
-                        }`}
+                          }`}
                         style={{ fontFamily: '"Inter", sans-serif' }}
                         aria-current={active ? "page" : undefined}
                       >

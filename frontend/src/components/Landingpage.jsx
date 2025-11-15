@@ -9,16 +9,17 @@ import Footer from './layout/Footer.jsx';
 
 function Landingpage() {
   return (
-    <div className="min-h-screen w-full flex flex-col bg-white relative overflow-x-hidden">
+    <div className=" flex flex-col bg-white overflow-x-hidden">
       {/* DOTTED BACKGROUND - Fixed z-index to be behind content */}
       <div
-        className="fixed inset-0 z-0 opacity-50 pointer-events-none"
+        className="fixed inset-0 z-0"
         style={{
           backgroundImage: 'radial-gradient(circle at 1px 1px, rgba(0, 0, 0, 0.35) 1px, transparent 0)',
           backgroundSize: '20px 20px',
         }}
         aria-hidden="true"
       />
+      
 
       {/* NAVBAR - Higher z-index to be above background */}
       <Navbar />

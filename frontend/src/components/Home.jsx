@@ -1,4 +1,4 @@
-// src/components/Home.jsx
+
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
@@ -33,7 +33,18 @@ const priceOptions = [
 ];
 
 const popularDestinations = [
-  "Paris", "Bali", "Tokyo", "New York", "Dubai", "Maldives", "Iceland", "Santorini"
+  "Goa",
+  "Jaipur",
+  "Leh-Ladakh",
+  "Kerala Backwaters",
+  "Rishikesh",
+  "Manali",
+  "Andaman & Nicobar",
+  "Udaipur",
+  "Varanasi",
+  "Rann of Kutch",
+  "Coorg",
+  "Munnar"
 ];
 
 // ──────────────────────────────────────────────────────────────
@@ -85,28 +96,63 @@ export default function Home() {
 
   return (
     <motion.div
-      className="min-h-screen w-full bg-white relative overflow-x-hidden pb-24 md:pb-0"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ staggerChildren: 0.15, delayChildren: 0.2 }}
+      className="min-h-screen w-full bg-white overflow-x-hidden relative "
     >
 
-      {/* DOTTED BACKGROUND */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 0.5 }}
-        transition={{ duration: 0.6 }}
-        className="fixed inset-0 z-0 pointer-events-none"
+      {/* Dashed Top Fade Grid */}
+      <div
+        className="absolute inset-0 z-0 w-full h-full"
         style={{
-          backgroundImage:
-            'radial-gradient(circle at 1px 1px, rgba(0, 0, 0, 0.35) 1px, transparent 0)',
-          backgroundSize: '20px 20px',
+          backgroundImage: `
+        linear-gradient(to right, #e7e5e4 1px, transparent 1px),
+        linear-gradient(to bottom, #e7e5e4 1px, transparent 1px)
+      `,
+          backgroundSize: "20px 20px",
+          backgroundPosition: "0 0, 0 0",
+          maskImage: `
+        repeating-linear-gradient(
+              to right,
+              black 0px,
+              black 3px,
+              transparent 3px,
+              transparent 8px
+            ),
+            repeating-linear-gradient(
+              to bottom,
+              black 0px,
+              black 3px,
+              transparent 3px,
+              transparent 8px
+            ),
+            radial-gradient(ellipse 80% 70% at 50% -20%, #000 70%, transparent 100%)
+      `,
+          WebkitMaskImage: `
+ repeating-linear-gradient(
+              to right,
+              black 0px,
+              black 3px,
+              transparent 3px,
+              transparent 8px
+            ),
+            repeating-linear-gradient(
+              to bottom,
+              black 0px,
+              black 3px,
+              transparent 3px,
+              transparent 8px
+            ),
+            radial-gradient(ellipse 80% 70% at 50% -20%, #000 70%, transparent 100%)
+      `,
+          maskComposite: "intersect",
+          WebkitMaskComposite: "source-in",
         }}
-        aria-hidden="true"
       />
 
+
+
+
       {/* MAIN CONTENT */}
-      <main className="relative z-10 w-full px-4 sm:px-6 lg:px-0 pt-20 md:pt-24 pb-16 min-h-[85vh] flex items-center justify-center">
+      <main className="relative  w-full px-4 sm:px-6 lg:px-0 pt-20 md:pt-24 pb-16 min-h-[85vh] flex items-center justify-center">
         <motion.div
           className="max-w-5xl mx-auto w-full"
           initial={{ opacity: 0 }}
@@ -114,7 +160,7 @@ export default function Home() {
           transition={{ staggerChildren: 0.15, delayChildren: 0.2 }}
         >
 
-          {/* HEADLINE */}
+          
           <motion.div className="text-center mb-12 lg:mb-16" initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, type: "spring", stiffness: 100 }}>
             <motion.h1 className="flex flex-col items-center gap-0 mb-6" style={{ lineHeight: '1' }} initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, type: "spring", stiffness: 100 }}>
               <motion.span className="font-black tracking-tight text-5xl sm:text-7xl md:text-8xl lg:text-9xl text-black" style={{ fontFamily: '"Bebas Neue", cursive', display: 'inline-block' }} initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, type: "spring", stiffness: 100 }}>
@@ -304,6 +350,8 @@ export default function Home() {
 
         </motion.div>
       </main>
+
+
     </motion.div>
   );
 }
