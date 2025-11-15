@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { NavLink, useLocation } from "react-router-dom";
 import { Search, MapPin, Route, Menu, X } from "lucide-react";
+import logo from "../assets/logo.png";
 
 export default function Navbar() {
   const { pathname } = useLocation();
@@ -50,14 +51,14 @@ export default function Navbar() {
             className="flex shrink-0 items-center gap-3 focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-900 focus-visible:ring-offset-2 focus-visible:ring-offset-transparent rounded-full"
             aria-label="NEXA Home"
           >
-            <motion.span
+            <motion.img
               whileHover={{ scale: 1.04 }}
               whileTap={{ scale: 0.97 }}
-              className="flex h-8 w-8 items-center justify-center rounded-[6px] border border-neutral-200 text-[11px] font-semibold tracking-[0.12em] text-neutral-800 bg-gradient-to-br from-neutral-50 to-neutral-100"
-              style={{ fontFamily: '"Inter", sans-serif' }}
-            >
-              NX
-            </motion.span>
+              src={logo}
+              alt="NEXA Logo"
+              className="h-8 w-8 rounded-full object-cover md:h-9 md:w-9"
+              loading="eager"
+            />
             <span
               className="text-base md:text-lg font-semibold tracking-tight text-neutral-900"
               style={{ fontFamily: '"Inter", sans-serif', letterSpacing: "-0.02em" }}
@@ -103,8 +104,18 @@ export default function Navbar() {
             </nav>
           )}
 
-          {/* === RIGHT SIDE: HAMBURGER (MOBILE) === */}
+          {/* === RIGHT SIDE: NX BADGE + HAMBURGER (MOBILE) === */}
           <div className="flex shrink-0 items-center gap-2">
+            {/* NX badge moved to the far right */}
+            <motion.span
+              whileHover={{ scale: 1.04 }}
+              whileTap={{ scale: 0.97 }}
+              className="hidden sm:flex h-8 w-8 items-center justify-center rounded-[6px] border border-neutral-200 text-[11px] font-semibold tracking-[0.12em] text-neutral-800 bg-gradient-to-br from-neutral-50 to-neutral-100"
+              style={{ fontFamily: '"Inter", sans-serif' }}
+            >
+              NX
+            </motion.span>
+
             {!isLanding && (
               <motion.button
                 whileHover={{ scale: 1.02, y: -1 }}

@@ -74,13 +74,6 @@ export default function Navbar() {
               className="h-9 w-9 rounded-full object-cover md:h-10 md:w-10"
               loading="eager"
             />
-            <motion.span
-              className="bg-gradient-to-r from-orange-600 to-yellow-500 bg-clip-text 
-                         text-xl font-black text-transparent md:text-2xl"
-              style={{ fontFamily: "'Stardos Stencil', cursive" }}
-            >
-              NEXA
-            </motion.span>
           </NavLink>
 
           {/* === DESKTOP TABS (≥1024px) === */}
@@ -158,6 +151,15 @@ export default function Navbar() {
                 </motion.div>
               </motion.button>
             )}
+            {/* Brand wordmark at the far right */}
+            <motion.span
+              className="hidden sm:inline bg-gradient-to-r from-orange-600 to-yellow-500 bg-clip-text text-lg font-black text-transparent md:text-xl"
+              style={{ fontFamily: "'Stardos Stencil', cursive" }}
+              whileHover={{ scale: 1.06 }}
+              transition={{ type: "spring", stiffness: 350, damping: 20 }}
+            >
+              NEXA
+            </motion.span>
           </div>
         </div>
       </motion.header>
