@@ -345,7 +345,7 @@ function TopChoices() {
                 Curated places that match your days, budget, and travel style.
               </motion.p>
             </div>
-            <div className="w-full grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6 sm:gap-8">
+            <div className="w-full max-w-4xl mx-auto grid grid-cols-1 sm:grid-cols-2 2xl:grid-cols-3 gap-6 sm:gap-8">
               {recommendation.top_places.map((place, idx) => (
                 <motion.div
                   key={place.id}
