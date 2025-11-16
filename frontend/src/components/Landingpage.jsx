@@ -14,7 +14,7 @@ function Landingpage() {
       <div
         className="fixed inset-0 z-0"
         style={{
-          backgroundImage: 'radial-gradient(circle at 1px 1px, rgba(0, 0, 0, 0.35) 1px, transparent 0)',
+          backgroundImage: 'radial-gradient(circle at 1px 1px, rgba(0, 0, 0, 0.18) 1px, transparent 0)',
           backgroundSize: '20px 20px',
         }}
         aria-hidden="true"
@@ -30,7 +30,7 @@ function Landingpage() {
       <main className="relative z-10 w-full flex flex-col items-center justify-center px-4 sm:px-8 xl:px-0 text-center py-20 lg:py-32 min-h-[80vh]">
   <div className="w-full max-w-5xl mx-auto flex flex-col gap-8">
     {/* Responsive Hero Headline */}
-    <h1 className="w-full flex flex-col lg:flex-row items-center lg:items-end justify-center text-center gap-y-0 gap-x-4 mb-0">
+    <h1 className="w-full flex flex-col lg:flex-row items-center lg:items-baseline justify-center text-center gap-y-0 gap-x-4 mb-0">
       <span
         className="text-5xl sm:text-7xl md:text-8xl lg:text-9xl font-black tracking-tight"
         style={{
@@ -96,7 +96,7 @@ function Landingpage() {
     <div className="flex justify-center pt-10 md:pt-12">
       <NavLink to="/home">
         <button
-          className="inline-flex items-center gap-3 bg-black text-white px-8 md:px-12 py-4 md:py-5 rounded-full text-lg md:text-xl font-semibold shadow-xl hover:bg-gray-800 hover:shadow-2xl transition-all transform active:scale-98 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2"
+          className="inline-flex items-center gap-3 bg-black text-white px-8 md:px-12 py-4 md:py-5 rounded-full text-lg md:text-xl font-semibold shadow-xl hover:bg-gray-800 hover:shadow-2xl transition-all transform active:scale-98 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 cursor-pointer"
           style={{
             fontFamily: '"Inter", sans-serif',
             letterSpacing: "0.01em",
@@ -148,11 +148,11 @@ const Navbar = () => {
 
       <NavLink to="/home">
         <button
-          className="bg-gradient-to-r from-orange-600 to-yellow-500 text-white px-5 sm:px-7 py-2.5 sm:py-3.5 rounded-full font-bold text-sm sm:text-base md:text-lg shadow-md hover:shadow-lg transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2"
+          className="inline-flex items-center justify-center bg-gradient-to-r from-orange-600 to-yellow-500 text-white px-5 sm:px-7 py-2.5 sm:py-3.5 rounded-full font-bold text-sm sm:text-base md:text-lg leading-none shadow-md hover:shadow-lg transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 cursor-pointer"
           style={{ fontFamily: 'Borel, cursive' }}
           aria-label="Try NEXA trip planner"
         >
-          Try It
+          <span className="relative top-[1px]">Try It</span>
         </button>
       </NavLink>
 

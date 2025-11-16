@@ -27,7 +27,7 @@ const features = [
 
 export default function BentoGrid() {
   return (
-    <section className="py-14 px-4 z-10 w-full bg-gradient-to-tr from-orange-50 via-white to-orange-100">
+    <section className="py-16 px-4 sm:px-6 lg:px-8 z-10 w-full bg-gradient-to-tr from-orange-50 via-white to-orange-100">
       <div className="max-w-7xl mx-auto">
         <motion.h2
           initial={{ opacity: 0, y: 20 }}
@@ -58,37 +58,39 @@ export default function BentoGrid() {
           </motion.span>
         </motion.h2>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
+        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-x-6 gap-y-8">
           {features.map((item, i) => (
             <motion.div
               key={i}
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: i * 0.1 }}
-              whileHover={{ scale: 1.05, y: -10 }}
-              className="relative rounded-3xl overflow-hidden shadow-2xl group bg-gradient-to-b from-white/80 to-orange-50"
-              style={{
-                boxShadow:
-                  "0 8px 36px 0 rgba(227,134,59,0.14), 0 1.5px 4px 0 rgba(0,0,0,0.03)"
-              }}
+              whileHover={{ y: -8 }}
+              className="relative cursor-pointer group aspect-[5/6] rounded-[20px] overflow-hidden bg-slate-900/90 shadow-[0_2px_4px_rgba(15,23,42,0.04),0_4px_12px_rgba(15,23,42,0.06),0_8px_24px_rgba(15,23,42,0.08)] transition-all duration-400 ease-[cubic-bezier(0.34,1.56,0.64,1)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 focus-visible:ring-offset-2"
+              role="button"
+              tabIndex={0}
             >
-              <div className="relative w-full aspect-[4/5] bg-gray-100">
+              <div className="relative w-full h-full bg-gray-100">
                 <img
                   src={item.image}
                   alt={item.title}
-                  className="absolute inset-0 w-full h-full object-cover transition-all group-hover:scale-105 z-0"
-                  style={{ objectPosition: "center", filter: "brightness(0.93)" }}
+                  className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] group-hover:scale-105 z-0"
+                  style={{
+                    objectPosition: "center",
+                    filter: "saturate(0.9) brightness(0.95) contrast(1.05)",
+                  }}
                   loading="lazy"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/65 via-black/20 to-transparent z-10"></div>
+                {/* Scrim for text readability */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent z-10" />
                 {item.badge && (
                   <motion.div
                     initial={{ opacity: 0, scale: 0.8 }}
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ duration: 0.5, delay: 0.3 }}
                     whileHover={{ scale: 1.1 }}
-                    className="absolute top-5 right-5 bg-orange-500 text-white px-4 py-1 rounded-full text-xs font-bold shadow-lg z-20"
-                    style={{ fontFamily: '"Borel", cursive', letterSpacing: "0.05em" }}
+                    className="absolute top-4 right-4 z-20 inline-flex items-center rounded-md bg-black/75 border-l-2 border-orange-500 px-3 py-1 text-[11px] font-bold tracking-[0.14em] uppercase text-white"
+                    style={{ fontFamily: '"Unbounded", sans-serif' }}
                   >
                     {item.badge}
                   </motion.div>
@@ -97,25 +99,32 @@ export default function BentoGrid() {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5, delay: 0.2 }}
-                  className="absolute bottom-0 left-0 w-full px-6 pb-7 pt-5 z-20 flex flex-col"
+                  className="absolute inset-x-0 bottom-0 z-20 flex flex-col px-6 md:px-8 pb-7 pt-6"
                 >
                   <motion.h3
-                    whileHover={{ scale: 1.05 }}
-                    className="text-xl lg:text-2xl font-extrabold text-white mb-1"
+                    whileHover={{ scale: 1.02 }}
+                    className="text-white mb-3"
                     style={{
                       fontFamily: '"Unbounded", sans-serif',
-                      letterSpacing: "0.02em",
                       fontWeight: 700,
+                      lineHeight: 1.2,
+                      letterSpacing: "-0.01em",
+                      fontSize: "clamp(1.25rem,2.4vw,1.5rem)",
+                      textShadow: "0 2px 12px rgba(0,0,0,0.4)",
                     }}
                   >
                     {item.title}
                   </motion.h3>
                   <motion.p
-                    whileHover={{ scale: 1.02 }}
-                    className="text-sm lg:text-base font-medium text-white opacity-90"
+                    whileHover={{ scale: 1.01 }}
+                    className="text-sm md:text-base text-white/90"
                     style={{
                       fontFamily: '"Montserrat", sans-serif',
-                      letterSpacing: "0.01em"
+                      fontWeight: 400,
+                      lineHeight: 1.5,
+                      letterSpacing: "0",
+                      maxWidth: "32ch",
+                      textShadow: "0 1px 8px rgba(0,0,0,0.3)",
                     }}
                   >
                     {item.description}

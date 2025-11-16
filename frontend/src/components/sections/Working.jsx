@@ -77,7 +77,7 @@ export default function HowItWorks() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: i * 0.2 }}
             whileHover={{ scale: 1.05, y: -10 }}
-            className="relative bg-white/95 backdrop-blur-2xl rounded-3xl border border-orange-100 shadow-xl lg:shadow-2xl flex flex-col items-center px-5 md:px-8 py-10 group"
+            className="relative cursor-pointer bg-white/95 backdrop-blur-2xl rounded-3xl border border-orange-100 shadow-xl lg:shadow-2xl flex flex-col items-center px-5 md:px-8 py-10 group"
             style={{
               boxShadow:
                 '0 8px 32px 0 rgba(245,122,36,0.09), 0 1.5px 4px 0 rgba(249,115,22,0.09)',

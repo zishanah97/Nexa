@@ -74,10 +74,11 @@ export default function Footer() {
             whileHover={{ scale: 1.1, y: -2 }}
             href="/home"
             className="
+              inline-flex items-center justify-center
               bg-orange-500
               text-white px-8 py-3 rounded-full font-bold
               text-base md:text-lg
-              shadow-lg
+              shadow-lg cursor-pointer
             "
             style={{
               fontFamily: '"Inter", sans-serif',
