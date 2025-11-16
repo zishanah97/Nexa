@@ -33,12 +33,12 @@ const priceOptions = [
 ];
 
 const popularDestinations = [
-  "Goa",
-  "Agra",
-  "Leh-Ladakh",
-  "Rishikesh",
-  "Manali",
-  "Varanasi"
+  "London",
+  "New York",
+  "Paris",
+  "Tokyo",
+  "Dubai",
+  "Sydney"
 ];
 
 // ──────────────────────────────────────────────────────────────
@@ -234,7 +234,7 @@ export default function Home() {
                   className="group px-4 py-2 sm:px-5 sm:py-2.5 bg-white/80 backdrop-blur-md relative
                              rounded-full text-xs sm:text-sm font-semibold text-gray-700
                              hover:bg-orange-50 hover:text-orange-700
-                             transition-all duration-300 shadow-sm hover:shadow-md"
+                             transition-all duration-300 shadow-sm hover:shadow-lg chip-elevated cursor-pointer"
                   style={{ fontFamily: '"Inter", sans-serif' }}
                 >
                   {dest}
