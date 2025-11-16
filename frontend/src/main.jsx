@@ -2,6 +2,7 @@ import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { RouterProvider, createBrowserRouter } from 'react-router-dom'
 import './index.css'
+import logo from './assets/logo.png'
 
 import Landingpage from './components/Landingpage.jsx'
 import Home from './components/Home.jsx'
@@ -15,6 +16,25 @@ import { PersistGate } from "redux-persist/integration/react";
 import { store, persistor } from "./Store.js";
 import Trending from './components/Trending.jsx'
 
+const setBranding = () => {
+  if (typeof document !== 'undefined') {
+    document.title = 'Nexa'
+
+    const existingLink = document.querySelector("link[rel~='icon']")
+    if (existingLink) {
+      existingLink.href = logo
+      existingLink.type = 'image/png'
+    } else {
+      const link = document.createElement('link')
+      link.rel = 'icon'
+      link.type = 'image/png'
+      link.href = logo
+      document.head.appendChild(link)
+    }
+  }
+}
+
+setBranding()
 
 const router = createBrowserRouter([
   {
