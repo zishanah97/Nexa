@@ -1,6 +1,7 @@
 import React from "react";
 import { motion, useMotionValue, useTransform } from "framer-motion";
 import { FaRegHeart, FaHeart, FaShareAlt } from "react-icons/fa";
+import { Calendar } from "lucide-react";
 
 function Card({ place }) {
   if (!place) return null;
@@ -67,10 +68,11 @@ function Card({ place }) {
         />
         {place.best_months && (
           <div
-            className="absolute top-3 right-3 bg-white/95 px-3 py-1.5 rounded-full text-[11px] font-medium text-neutral-800 shadow-sm border border-neutral-200 select-none"
+            className="absolute top-3 right-3 bg-white/95 px-3 py-1.5 rounded-full text-[11px] font-medium text-neutral-800 shadow-sm border border-neutral-200 select-none flex items-center gap-1.5"
             style={{ fontFamily: "'Inter', sans-serif" }}
           >
-            📅 {place.best_months?.slice(0, 2).join(", ")}
+            <Calendar className="w-3.5 h-3.5 text-orange-500" />
+            <span>{place.best_months?.slice(0, 2).join(", ")}</span>
           </div>
         )}
       </figure>
