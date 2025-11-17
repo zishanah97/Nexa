@@ -133,7 +133,7 @@ function Landingpage() {
 const Navbar = () => {
   return (
     <nav
-      className="relative z-20 flex items-center justify-between rounded-full max-w-6xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-2 shadow-xl/20 bg-white mt-2"
+      className="relative z-20 flex items-center justify-between rounded-full max-w-6xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-2 shadow-xl/20 bg-white mt-2 overflow-hidden"
       role="navigation"
       aria-label="Main navigation"
     >
@@ -154,11 +154,12 @@ const Navbar = () => {
 
       <NavLink to="/home">
         <button
-          className="bg-gradient-to-b from-orange-600 to-yellow-500 text-white px-5 sm:px-7 py-2.5 sm:py-3.5 rounded-full font-bold text-sm sm:text-base md:text-lg shadow-md hover:shadow-lg transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 cursor-pointer items-end italic cursive font-roboto inset-shadow-xs text-neutral-900 "
+          className="bg-gradient-to-b from-orange-600 to-yellow-500 text-white px-5 sm:px-7 py-2.5 sm:py-3.5 rounded-full font-bold text-sm sm:text-base md:text-lg shadow-md hover:shadow-lg transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 cursor-pointer items-end font-sans font-extrabold italic text-neutral-900 text-shadow-lg"
          
         >
           Try It
         </button>
+        <span className="absolute  inset-x-0 h-[3px] -bottom-[1px] bg-gradient-to-b  from-orange-600 via-orange-600 to-yellow-500 "></span>
       </NavLink>
 
     </nav>
