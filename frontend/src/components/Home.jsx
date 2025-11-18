@@ -13,9 +13,7 @@ import {
 } from "lucide-react";
 import { setPreferences, clearPreferences } from "../slices/preferencesSlice.js";
 
-// ──────────────────────────────────────────────────────────────
-//  DATA
-// ──────────────────────────────────────────────────────────────
+// Options for the dropdowns and popular destinations
 const dayOptions = ["One Day", "Two Days", "Three Days", "Week", "Many Weeks", "One Month"];
 const peopleOptions = ["Solo", "Couple", "Small Group (3-5)", "Medium Group (6-10)", "Large Group (10+)"];
 const priceOptions = [
@@ -27,12 +25,9 @@ const priceOptions = [
   { label: "Elite ₹100k+", value: 100000 },
   { label: "Luxury", value: "luxury" }
 ];
-
 const popularDestinations = ["London", "New York", "Paris", "Tokyo", "Dubai", "Sydney"];
 
-// ──────────────────────────────────────────────────────────────
-//  REFINED VARIANTS — SMOOTH & SYNCHRONIZED
-// ──────────────────────────────────────────────────────────────
+// Animation settings for page and components
 const pageVariants = {
   hidden: { opacity: 0 },
   visible: {
@@ -45,7 +40,6 @@ const pageVariants = {
     }
   }
 };
-
 const titleLine = {
   hidden: { opacity: 0, y: 60 },
   visible: {
@@ -53,11 +47,10 @@ const titleLine = {
     y: 0,
     transition: {
       duration: 0.7,
-      ease: [0.22, 1, 0.36, 1] // Custom ease for smoothness
+      ease: [0.22, 1, 0.36, 1]
     }
   }
 };
-
 const subtitle = {
   hidden: { opacity: 0, y: 30 },
   visible: {
@@ -69,7 +62,6 @@ const subtitle = {
     }
   }
 };
-
 const section = {
   hidden: { opacity: 0, y: 20 },
   visible: {
@@ -81,7 +73,6 @@ const section = {
     }
   }
 };
-
 const chipContainer = {
   hidden: { opacity: 0 },
   visible: {
@@ -92,7 +83,6 @@ const chipContainer = {
     }
   }
 };
-
 const chip = {
   hidden: { opacity: 0, y: 15, scale: 0.95 },
   visible: {
@@ -105,7 +95,6 @@ const chip = {
     }
   }
 };
-
 const formCard = {
   hidden: { opacity: 0, y: 30 },
   visible: {
@@ -119,7 +108,6 @@ const formCard = {
     }
   }
 };
-
 const formItem = {
   hidden: { opacity: 0, y: 10 },
   visible: {
@@ -131,14 +119,8 @@ const formItem = {
     }
   }
 };
-
-// Dropdown-specific variants
 const dropdownContainer = {
-  hidden: {
-    opacity: 0,
-    scale: 0.95,
-    y: -8
-  },
+  hidden: { opacity: 0, scale: 0.95, y: -8 },
   visible: {
     opacity: 1,
     scale: 1,
@@ -160,7 +142,6 @@ const dropdownContainer = {
     }
   }
 };
-
 const dropdownItem = {
   hidden: { opacity: 0, x: -8 },
   visible: {
@@ -173,18 +154,20 @@ const dropdownItem = {
   }
 };
 
-// ──────────────────────────────────────────────────────────────
-//  MAIN COMPONENT
-// ──────────────────────────────────────────────────────────────
 export default function Home() {
+  // Preferences state to track user input selections
   const [pref, setPref] = useState({ destination: "", days: "", people: "", price: "" });
+  // Dropdown open state for each dropdown menu
   const [open, setOpen] = useState({ days: false, people: false, price: false });
+  // Loading state to show spinner on submit button
   const [loading, setLoading] = useState(false);
+  // Track if destination input is focused (optional UI effects)
   const [focused, setFocused] = useState(false);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
+  // Triggered when user clicks "Start Planning" button
   const handleSearch = () => {
     if (!pref.destination.trim()) return;
 
@@ -202,37 +185,39 @@ export default function Home() {
     navigate("/loader", { state: { prefKey: JSON.stringify(preferences), preferences } });
   };
 
+  // Simple form validation: destination is required
   const isFormValid = pref.destination.trim().length > 0;
 
   return (
-    <motion.div className="min-h-screen w-full relative bg-white overflow-x-hidden">
-
-      {/* DASHED GRID BACKGROUND */}
-      <div className="absolute inset-0 z-0" style={{
-        backgroundImage: `
-          linear-gradient(to right, rgba(0,0,0,0.04) 1px, transparent 1px),
-          linear-gradient(to bottom, rgba(0,0,0,0.04) 1px, transparent 1px)
-        `,
-        backgroundSize: "20px 20px",
-        maskImage: `repeating-linear-gradient(to right, black 0px, black 3px, transparent 3px, transparent 8px),
-                    repeating-linear-gradient(to bottom, black 0px, black 3px, transparent 3px, transparent 8px)`,
-        WebkitMaskImage: `repeating-linear-gradient(to right, black 0px, black 3px, transparent 3px, transparent 8px),
-                          repeating-linear-gradient(to bottom, black 0px, black 3px, transparent 3px, transparent 8px)`,
-        maskComposite: "intersect",
-        WebkitMaskComposite: "source-in",
-      }} />
+    <motion.div
+      className="min-h-screen w-full relative bg-white overflow-x-hidden"
+      // Prevent horizontal scroll caused by dropdown expanding
+      style={{ overflowX: "hidden" }}
+    >
+      {/* Background grid pattern */}
+      <div
+        className="absolute inset-0 z-0"
+        style={{
+          backgroundImage: `linear-gradient(to right, rgba(0,0,0,0.04) 1px, transparent 1px),
+                            linear-gradient(to bottom, rgba(0,0,0,0.04) 1px, transparent 1px)`,
+          backgroundSize: "20px 20px",
+          maskImage: `repeating-linear-gradient(to right, black 0px, black 3px, transparent 3px, transparent 8px),
+                      repeating-linear-gradient(to bottom, black 0px, black 3px, transparent 3px, transparent 8px)`,
+          WebkitMaskImage: `repeating-linear-gradient(to right, black 0px, black 3px, transparent 3px, transparent 8px),
+                            repeating-linear-gradient(to bottom, black 0px, black 3px, transparent 3px, transparent 8px)`,
+          maskComposite: "intersect",
+          WebkitMaskComposite: "source-in"
+        }}
+      />
 
       <main className="relative w-full px-4 sm:px-6 lg:px-0 pt-4 md:pt-10 pb-16 min-h-[85vh] flex items-center justify-center">
-
-        {/* MASTER CONTAINER */}
         <motion.div
           className="max-w-5xl mx-auto w-full"
           variants={pageVariants}
           initial="hidden"
           animate="visible"
         >
-
-          {/* HERO */}
+          {/* Hero text introducing the page */}
           <motion.div className="text-center mb-6 sm:mb-8" variants={section}>
             <motion.h1 className="flex flex-col items-center gap-0 mb-4 sm:mb-5" style={{ lineHeight: "1" }}>
               <motion.span
@@ -250,25 +235,30 @@ export default function Home() {
                 TAKE FLIGHT
               </motion.span>
             </motion.h1>
-
-            <motion.p variants={subtitle} className="text-xs sm:text-sm md:text-base text-gray-700 max-w-xl mx-auto font-medium px-4" style={{ fontFamily: '"Montserrat", sans-serif', lineHeight: 1.7, letterSpacing: "0.01em" }}>
+            <motion.p
+              variants={subtitle}
+              className="text-xs sm:text-sm md:text-base text-gray-700 max-w-xl mx-auto font-medium px-4"
+              style={{ fontFamily: '"Montserrat", sans-serif', lineHeight: 1.7, letterSpacing: "0.01em" }}
+            >
               Tell us your
-              <motion.span className="text-orange-600 inline-block ml-1" style={{ fontFamily: '"Lobster", cursive', fontWeight: 700 }} whileHover={{ scale: 1.05 }}>
+              <motion.span className="text-orange-600 inline-block ml-1" style={{ fontFamily: '"Lobster", cursive', fontWeight: 700 }}>
                 destination & vibe
               </motion.span>
               — we'll craft the perfect journey.
             </motion.p>
           </motion.div>
 
-          {/* POPULAR DESTINATIONS */}
+          {/* Popular destinations to pick quickly */}
           <motion.div className="text-center mb-5 sm:mb-7" variants={section}>
             <div className="flex items-center justify-center gap-1.5 mb-4 sm:mb-6">
               <TrendingUp className="w-3 h-3 sm:w-4 sm:h-4 text-orange-600" />
-              <h4 className="text-xs sm:text-sm font-medium text-gray-700 uppercase tracking-wider" style={{ fontFamily: '"Unbounded", sans-serif"' }}>
+              <h4
+                className="text-xs sm:text-sm font-medium text-gray-700 uppercase tracking-wider"
+                style={{ fontFamily: '"Unbounded", sans-serif"' }}
+              >
                 Popular Destinations
               </h4>
             </div>
-
             <motion.div
               className="flex flex-wrap justify-center gap-x-3 gap-y-2 max-w-2xl mx-auto"
               variants={chipContainer}
@@ -291,27 +281,27 @@ export default function Home() {
             </motion.div>
           </motion.div>
 
-          {/* SEARCH FORM */}
-          <motion.div className=" border border-neutral-200 w-full z-20 mt-6 sm:mt-8 max-w-4xl mx-auto mb-10 sm:mb-12 relative rounded-3xl overflow-hidden p-[3px] overflow-hidden" variants={formCard}>
-
-            <div className="absolute inset-0 h-full w-full scale-[2.4] z-0 animate-spin [background:conic-gradient(at_center,transparent_0%,blue_20%,transparent_50%)] [animation-duration:1.5s]" />
-
-            <div className="absolute inset-0 h-full w-full scale-[2.4] z-0 animate-spin [background:conic-gradient(at_center,transparent_0%,red_20%,transparent_50%)] [animation-duration:1.5s] [animation-delay:0.4s]" />
-
-            
-
-
-
+          {/* Search form for custom trip preferences */}
+          <motion.div
+            className="border border-neutral-200 w-full z-20 mt-6 sm:mt-8 max-w-4xl mx-auto mb-10 sm:mb-12 rounded-3xl p-[3px] relative"
+            variants={formCard}
+          >
             <form
-              className={`relative z-20   backdrop-blur-2xl rounded-3xl p-6 sm:p-8 lg:p-10 overflow-visible shadow-[0_20px_40px_rgba(0,0,0,0.08)] transition-all duration-300 bg-white`}
-              onSubmit={(e) => { e.preventDefault(); handleSearch(); }}>
-              <div >
-
-                {/* DESTINATION INPUT */}
+              className="backdrop-blur-2xl rounded-3xl p-6 sm:p-8 lg:p-10 overflow-visible shadow-[0_20px_40px_rgba(0,0,0,0.08)] transition-all duration-300 bg-white"
+              onSubmit={(e) => {
+                e.preventDefault();
+                handleSearch();
+              }}
+            >
+              <div>
+                {/* Destination input */}
                 <motion.div variants={formItem} className="mb-6 sm:mb-8">
                   <div className="flex items-center gap-3 mb-3">
                     <MapPin className="w-5 h-5 text-orange-600" />
-                    <label className="text-xs sm:text-sm font-bold tracking-wide text-gray-800 uppercase" style={{ fontFamily: '"Unbounded", sans-serif"' }}>
+                    <label
+                      className="text-xs sm:text-sm font-bold tracking-wide text-gray-800 uppercase"
+                      style={{ fontFamily: '"Unbounded", sans-serif"' }}
+                    >
                       Destination
                     </label>
                   </div>
@@ -327,7 +317,7 @@ export default function Home() {
                   />
                 </motion.div>
 
-                {/* DROPDOWNS */}
+                {/* Dropdown selectors for days, people, and budget */}
                 <motion.div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-5 mb-8 sm:mb-10" variants={formItem}>
                   <CustomDropdown
                     label="Duration"
@@ -337,7 +327,10 @@ export default function Home() {
                     placeholder="How many days?"
                     open={open.days}
                     onToggle={() => setOpen({ days: !open.days, people: false, price: false })}
-                    onSelect={(v) => { setPref({ ...pref, days: v }); setOpen({ ...open, days: false }); }}
+                    onSelect={(v) => {
+                      setPref({ ...pref, days: v });
+                      setOpen({ ...open, days: false });
+                    }}
                   />
                   <CustomDropdown
                     label="Travelers"
@@ -347,29 +340,44 @@ export default function Home() {
                     placeholder="How many?"
                     open={open.people}
                     onToggle={() => setOpen({ days: false, people: !open.people, price: false })}
-                    onSelect={(v) => { setPref({ ...pref, people: v }); setOpen({ ...open, people: false }); }}
+                    onSelect={(v) => {
+                      setPref({ ...pref, people: v });
+                      setOpen({ ...open, people: false });
+                    }}
                   />
                   <CustomDropdown
                     label="Budget"
                     icon={<Wallet className="w-5 h-5" />}
-                    options={priceOptions.map(o => o.label)}
-                    value={pref.price ? (typeof pref.price === 'string' ? 'Luxury' : priceOptions.find(o => o.value === pref.price)?.label) : ""}
+                    options={priceOptions.map((o) => o.label)}
+                    value={
+                      pref.price
+                        ? typeof pref.price === "string"
+                          ? "Luxury"
+                          : priceOptions.find((o) => o.value === pref.price)?.label
+                        : ""
+                    }
                     placeholder="Your range"
                     open={open.price}
                     onToggle={() => setOpen({ days: false, people: false, price: !open.price })}
-                    onSelect={(label) => { const sel = priceOptions.find(o => o.label === label); setPref({ ...pref, price: sel.value }); setOpen({ ...open, price: false }); }}
+                    onSelect={(label) => {
+                      const sel = priceOptions.find((o) => o.label === label);
+                      setPref({ ...pref, price: sel.value });
+                      setOpen({ ...open, price: false });
+                    }}
                   />
                 </motion.div>
 
-                {/* CTA BUTTON */}
+                {/* Button to submit the form and start planning */}
                 <motion.button
                   type="submit"
                   disabled={loading || !isFormValid}
                   variants={formItem}
                   whileHover={isFormValid && !loading ? { scale: 1.02, y: -2 } : {}}
                   whileTap={isFormValid && !loading ? { scale: 0.98 } : {}}
-                  className={`group w-full relative overflow-hidden bg-black text-white font-bold px-8 py-4 rounded-full text-lg sm:text-xl shadow-xl flex items-center justify-center gap-3 transition-all duration-300 ${!isFormValid || loading ? 'opacity-50 cursor-not-allowed' : ''}`}
-                  style={{ fontFamily: '"Inter", sans-serif', letterSpacing: '0.01em' }}
+                  className={`group w-full relative overflow-hidden bg-black text-white font-bold px-8 py-4 rounded-full text-lg sm:text-xl shadow-xl flex items-center justify-center gap-3 transition-all duration-300 ${
+                    !isFormValid || loading ? "opacity-50 cursor-not-allowed" : ""
+                  }`}
+                  style={{ fontFamily: '"Inter", sans-serif', letterSpacing: "0.01em" }}
                 >
                   {loading ? (
                     <div className="relative size-20">
@@ -390,24 +398,23 @@ export default function Home() {
                 </motion.button>
               </div>
             </form>
-
           </motion.div>
-
         </motion.div>
       </main>
     </motion.div>
   );
 }
 
-// ──────────────────────────────────────────────────────────────
-//  CUSTOM DROPDOWN — WITH PROPER AnimatePresence
-// ──────────────────────────────────────────────────────────────
+// The dropdown component lets user select an option from a list with smooth animations
 function CustomDropdown({ label, icon, options, value, placeholder, open, onToggle, onSelect }) {
   return (
     <div className="relative">
       <div className="flex items-center gap-2 mb-2">
         <span className="text-orange-600">{icon}</span>
-        <label className="text-xs font-bold tracking-wide text-gray-700 uppercase" style={{ fontFamily: '"Unbounded", sans-serif"' }}>
+        <label
+          className="text-xs font-bold tracking-wide text-gray-700 uppercase"
+          style={{ fontFamily: '"Unbounded", sans-serif"' }}
+        >
           {label}
         </label>
       </div>
@@ -417,7 +424,9 @@ function CustomDropdown({ label, icon, options, value, placeholder, open, onTogg
         onClick={onToggle}
         whileHover={{ scale: 1.01, y: -1 }}
         whileTap={{ scale: 0.99 }}
-        className={`w-full bg-white/95 backdrop-blur-sm border-2 px-4 sm:px-5 py-3.5 rounded-xl flex items-center justify-between gap-2 text-sm font-semibold transition-all duration-300 ${open ? 'border-orange-400 shadow-lg' : 'border-gray-200 hover:border-gray-300'} ${value ? 'text-gray-900' : 'text-gray-500'}`}
+        className={`w-full bg-white/95 backdrop-blur-sm border-2 px-4 sm:px-5 py-3.5 rounded-xl flex items-center justify-between gap-2 text-sm font-semibold transition-all duration-300 ${
+          open ? "border-orange-400 shadow-lg" : "border-gray-200 hover:border-gray-300"
+        } ${value ? "text-gray-900" : "text-gray-500"}`}
         style={{ fontFamily: '"Inter", sans-serif' }}
       >
         <span className="truncate text-left">{value || placeholder}</span>
@@ -437,7 +446,9 @@ function CustomDropdown({ label, icon, options, value, placeholder, open, onTogg
             initial="hidden"
             animate="visible"
             exit="exit"
-            className="absolute top-full left-0 right-0 mt-2 bg-white/98 backdrop-blur-xl border-2 border-gray-200 rounded-xl shadow-2xl z-[999] max-h-60 overflow-y-auto"
+            className="absolute top-full left-0 right-0 mt-2 bg-white/98 backdrop-blur-xl border-2 border-gray-200 rounded-xl shadow-2xl z-[999] overflow-y-auto max-h-72"
+            // prevent horizontal scroll caused by dropdown content
+            style={{ overflowX: "hidden" }}
           >
             {options.map((opt) => (
               <motion.div
