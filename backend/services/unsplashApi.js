@@ -29,3 +29,22 @@ export async function fetchUnsplashImage(query1, query2 = "") {
     return {};
   }
 }
+
+export async function fetchUnsplashImages(query, per_page = 12) {
+  try {
+    const res = await axios.get("https://api.unsplash.com/search/photos", {
+      params: {
+        query,
+        per_page,
+        orientation: "landscape",
+      },
+      headers: {
+        Authorization: `Client-ID ${UNSPLASH_ACCESS_KEY}`,
+      },
+    });
+    return res.data.results || [];
+  } catch (err) {
+    console.error("Unsplash error:", err.response?.data || err.message);
+    return [];
+  }
+}

@@ -55,7 +55,19 @@ budget: ${preferences.budget}
       "est_daily_cost_per_person": { "min": number, "max": number },
       "best_months": ["3-letter month names, e.g., Nov","Dec"],
       "image_search_query": "succinct query the frontend can use (e.g., 'Halong Bay limestone karsts sunset')",
-      "map_hint": "area or landmark to center a map on"
+      "map_hint": "area or landmark to center a map on",
+      "local_foods": [
+        { "name": "string", "desc": "short description", "price": number, "mustTry": boolean }
+      ],
+      "insider_tips": ["string", "string", "string"],
+      "budget_breakdown": { "accommodation": number, "food": number, "activities": number, "transport": number },
+      "similar_destinations": ["string", "string", "string"],
+      "quick_facts": {
+        "currency": "string",
+        "languages": "string",
+        "timezone": "string",
+        "visa": "string"
+      }
     }
     // ...exactly 15 items total, sorted by fit_score desc
   ],

@@ -8,6 +8,7 @@ import dotenv from 'dotenv'
 import authRoutes from './routes/authRoutes.js'
 import userRoutes from './routes/userRoutes.js'
 import recommendationRoutes from './routes/recommendRoutes.js';
+import imageRoutes from './routes/imageRoutes.js';
 
 //start express 
 dotenv.config();
@@ -20,6 +21,7 @@ app.use(cors())
 app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1/user", userRoutes);
 app.use("/api/v1/recommendations", recommendationRoutes)
+app.use("/api/v1/images", imageRoutes);
 
 app.get('/health', (req, res) => {
   res.json({ status: 'ok' });
