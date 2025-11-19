@@ -231,8 +231,7 @@ export default function DestinationDetailModal({ place, isOpen, onClose }) {
         "Use public transport for better experience"
     ];
 
-    // Transform similar destinations strings to objects
-    const similarDestinations = (place.similar_destinations || []).map(name => ({ name, image: "" }));
+
 
     return (
         <AnimatePresence>
@@ -598,7 +597,7 @@ export default function DestinationDetailModal({ place, isOpen, onClose }) {
                                     </motion.div>
 
                                     {/* SECTION 7: Insider Tips */}
-                                    <motion.div variants={sectionVariants}>
+                                    <motion.div variants={sectionVariants} className="pb-8">
                                         <h2
                                             className="text-2xl font-bold text-neutral-900 mb-6 flex items-center gap-2"
                                             style={{ fontFamily: '"Playfair Display", serif' }}
@@ -614,36 +613,12 @@ export default function DestinationDetailModal({ place, isOpen, onClose }) {
                                                     whileInView={{ opacity: 1, x: 0 }}
                                                     viewport={{ once: true }}
                                                     transition={{ delay: idx * 0.05 }}
-                                                    className="p-4 bg-amber-50 border border-amber-200 rounded-xl flex items-start gap-3 hover:bg-amber-100 transition-colors"
+                                                    className="p-4 bg-amber-50/50 border border-amber-100/50 hover:border-amber-200 rounded-xl flex items-start gap-3 hover:bg-amber-50 transition-all duration-300 shadow-sm hover:shadow-md"
                                                 >
-                                                    <div className="flex-shrink-0 w-6 h-6 bg-orange-500 text-white rounded-full flex items-center justify-center text-xs font-bold">
+                                                    <div className="flex-shrink-0 w-6 h-6 bg-gradient-to-br from-orange-500 to-amber-500 text-white rounded-full flex items-center justify-center text-xs font-bold shadow-sm">
                                                         {idx + 1}
                                                     </div>
-                                                    <p className="text-sm text-neutral-800 leading-relaxed">{tip}</p>
-                                                </motion.div>
-                                            ))}
-                                        </div>
-                                    </motion.div>
-
-                                    {/* SECTION 8: Similar Destinations */}
-                                    <motion.div variants={sectionVariants}>
-                                        <h2
-                                            className="text-2xl font-bold text-neutral-900 mb-6"
-                                            style={{ fontFamily: '"Playfair Display", serif' }}
-                                        >
-                                            Similar Destinations You'll Love
-                                        </h2>
-                                        <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
-                                            {similarDestinations.map((dest) => (
-                                                <motion.div
-                                                    key={dest.name}
-                                                    whileHover={{ y: -4, scale: 1.02 }}
-                                                    className="group relative h-32 sm:h-40 bg-neutral-300 rounded-2xl overflow-hidden cursor-pointer"
-                                                >
-                                                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
-                                                    <h3 className="absolute bottom-3 left-3 text-white font-bold text-lg">
-                                                        {dest.name}
-                                                    </h3>
+                                                    <p className="text-sm text-neutral-800 leading-relaxed font-medium">{tip}</p>
                                                 </motion.div>
                                             ))}
                                         </div>
@@ -652,37 +627,39 @@ export default function DestinationDetailModal({ place, isOpen, onClose }) {
                                 </div>
                             </div>
 
-                            {/* Sticky Action Bar */}
-                            <div className="sticky bottom-0 left-0 right-0 p-6 bg-white/95 backdrop-blur-xl border-t border-neutral-200 shadow-[0_-4px_20px_rgba(0,0,0,0.08)]">
-                                <div className="flex flex-col sm:flex-row items-center gap-3">
+                            {/* Sticky Action Bar - Premium Glassmorphism */}
+                            <div className="sticky bottom-0 left-0 right-0 p-4 sm:p-6 bg-white/80 backdrop-blur-2xl border-t border-white/20 shadow-[0_-8px_30px_rgba(0,0,0,0.04)] z-20">
+                                <div className="flex flex-col sm:flex-row items-center gap-3 max-w-4xl mx-auto">
                                     <motion.button
-                                        whileHover={{ scale: 1.02, y: -2 }}
+                                        whileHover={{ scale: 1.02, y: -1 }}
                                         whileTap={{ scale: 0.98 }}
-                                        className="w-full sm:flex-1 px-8 py-4 bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white font-bold rounded-full shadow-lg hover:shadow-xl transition-all duration-200 flex items-center justify-center gap-2"
+                                        className="w-full sm:flex-1 px-8 py-4 bg-gradient-to-r from-orange-600 to-amber-500 hover:from-orange-500 hover:to-amber-400 text-white font-bold text-lg rounded-full shadow-lg hover:shadow-orange-500/30 transition-all duration-300 flex items-center justify-center gap-2 group"
                                         style={{ fontFamily: '"Inter", sans-serif' }}
                                     >
-                                        <Plane className="w-5 h-5" />
+                                        <Plane className="w-5 h-5 group-hover:-rotate-12 transition-transform duration-300" />
                                         Plan My Trip Here
                                     </motion.button>
-                                    <motion.button
-                                        whileHover={{ scale: 1.02, y: -2 }}
-                                        whileTap={{ scale: 0.98 }}
-                                        onClick={() => setIsSaved(!isSaved)}
-                                        className={`px-6 py-4 font-semibold rounded-full border-2 transition-all duration-200 ${isSaved
-                                            ? "bg-red-50 border-red-500 text-red-500"
-                                            : "bg-white border-neutral-300 text-neutral-700 hover:border-orange-500 hover:text-orange-500"
-                                            }`}
-                                    >
-                                        <Heart className={`w-5 h-5 ${isSaved ? "fill-current" : ""}`} />
-                                    </motion.button>
-                                    <motion.button
-                                        whileHover={{ scale: 1.02, y: -2 }}
-                                        whileTap={{ scale: 0.98 }}
-                                        onClick={handleShare}
-                                        className="px-6 py-4 bg-white border-2 border-neutral-300 hover:border-orange-500 text-neutral-700 hover:text-orange-500 font-semibold rounded-full transition-all duration-200"
-                                    >
-                                        <Share2 className="w-5 h-5" />
-                                    </motion.button>
+                                    <div className="flex w-full sm:w-auto gap-3">
+                                        <motion.button
+                                            whileHover={{ scale: 1.05, y: -1 }}
+                                            whileTap={{ scale: 0.95 }}
+                                            onClick={() => setIsSaved(!isSaved)}
+                                            className={`flex-1 sm:flex-none px-6 py-4 font-semibold rounded-full border transition-all duration-300 flex justify-center items-center ${isSaved
+                                                ? "bg-red-50 border-red-200 text-red-500 shadow-inner"
+                                                : "bg-white/50 border-neutral-200 text-neutral-600 hover:border-orange-300 hover:text-orange-500 hover:bg-white hover:shadow-md"
+                                                }`}
+                                        >
+                                            <Heart className={`w-5 h-5 ${isSaved ? "fill-current" : ""}`} />
+                                        </motion.button>
+                                        <motion.button
+                                            whileHover={{ scale: 1.05, y: -1 }}
+                                            whileTap={{ scale: 0.95 }}
+                                            onClick={handleShare}
+                                            className="flex-1 sm:flex-none px-6 py-4 bg-white/50 border border-neutral-200 hover:border-orange-300 text-neutral-600 hover:text-orange-500 hover:bg-white font-semibold rounded-full transition-all duration-300 shadow-sm hover:shadow-md flex justify-center items-center"
+                                        >
+                                            <Share2 className="w-5 h-5" />
+                                        </motion.button>
+                                    </div>
                                 </div>
                             </div>
                         </motion.div>
