@@ -4,6 +4,7 @@ import Home from "./components/Home";
 import Landingpage from "./components/Landingpage";
 import TopChoices from "./components/TopChoices";
 import Itinerary from "./components/Itinerary";
+import DestinationDetailsPage from "./pages/DestinationDetailsPage";
 
 const router = createBrowserRouter([
   {
@@ -27,6 +28,10 @@ const router = createBrowserRouter([
         element: <Itinerary />,
       },
     ],
+  },
+  {
+    path: "/destination",
+    element: <DestinationDetailsPage />,
   },
 ]);
 
