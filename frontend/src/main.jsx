@@ -10,6 +10,7 @@ import TopChoices from './components/TopChoices.jsx'
 import Itinerary from './components/Itinerary.jsx'
 import MainLayout from './components/MainLayout.jsx'
 import LoaderPage from './components/LoaderPage.jsx'
+import DestinationDetailsPage from './pages/DestinationDetailsPage.jsx'
 
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
@@ -53,8 +54,6 @@ const router = createBrowserRouter([
         index: true,
         element: <Home />,
       },
-        
-
       {
         path: "top-choices",
         element: <TopChoices />,
@@ -65,6 +64,10 @@ const router = createBrowserRouter([
       },
     ],
   },
+  {
+    path: "/destination",
+    element: <DestinationDetailsPage />,
+  },
 ])
 
 // Debug function to check persistence
@@ -73,7 +76,7 @@ const debugPersistence = () => {
   const keys = Object.keys(localStorage);
   const persistKeys = keys.filter(key => key.startsWith('persist:'));
   console.log('Persist keys found:', persistKeys);
-  
+
   persistKeys.forEach(key => {
     try {
       const data = JSON.parse(localStorage.getItem(key));
@@ -90,7 +93,7 @@ debugPersistence();
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <Provider store={store}>
-      <PersistGate 
+      <PersistGate
         loading={
           <div className="min-h-screen flex items-center justify-center bg-black text-white">
             <div className="text-center">
@@ -98,7 +101,7 @@ createRoot(document.getElementById('root')).render(
               <p>Loading your saved data...</p>
             </div>
           </div>
-        } 
+        }
         persistor={persistor}
         onBeforeLift={() => {
           console.log('PersistGate: About to lift (rehydrate data)');
