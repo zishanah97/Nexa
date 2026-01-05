@@ -7,7 +7,7 @@ import { setItinerary, clearItinerary } from "../slices/itinerarySlice.js";
 import { setPreferences } from "../slices/preferencesSlice.js";
 import { generatePreferenceKey } from "../utils/cacheUtils.js";
 
-const API_BASE = "https://nexa-5.onrender.com";
+const API_BASE = "https://nexa-3.onrender.com";
 
 export default function Itinerary() {
   const preferences = useSelector((state) => state.preferences);

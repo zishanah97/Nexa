@@ -4,7 +4,7 @@ import { useDispatch } from "react-redux";
 import { setRecommendation } from "../slices/recommendationSlice";
 import { setLastFetchedKey } from "../slices/preferencesSlice";
 import axios from "axios";
-const API_BASE = "https://nexa-5.onrender.com";
+const API_BASE = "https://nexa-3.onrender.com";
 
 const steps = [
   "Submitting your search preferences",
@@ -31,18 +31,18 @@ export default function LoaderPage() {
     }
     let isMounted = true;
     let start = Date.now();
-    let minLoaderTime = 8; 
+    let minLoaderTime = 8;
 
     // Step 1
     setActiveStep(0);
 
     setTimeout(() => isMounted && setActiveStep(1), 200);
 
-        setTimeout(async () => {
+    setTimeout(async () => {
       isMounted && setActiveStep(2);
 
       try {
-        
+
         // For backward compatibility, still get the full recommendation
         const response = await axios.post(
           `${API_BASE}/api/v1/recommendations`,
@@ -65,7 +65,7 @@ export default function LoaderPage() {
             );
             // Mark these preferences as fetched to prevent redundant API calls
             dispatch(setLastFetchedKey(prefKey));
-            setActiveStep(4); 
+            setActiveStep(4);
           }
         }, 600);
 
@@ -76,7 +76,7 @@ export default function LoaderPage() {
           if (isMounted) {
             setActiveStep(5);
             setTimeout(() => {
-             
+
               navigate("/home/top-choices", { state: { prefKey } });
             }, 750);
           }
@@ -111,8 +111,8 @@ export default function LoaderPage() {
             i < activeStep
               ? "done"
               : i === activeStep
-              ? "active"
-              : "next";
+                ? "active"
+                : "next";
           return (
             <li key={i} className="flex items-center gap-3">
               <span
@@ -154,7 +154,7 @@ export default function LoaderPage() {
           <path className="opacity-70" fill="currentColor" d="M4 12a8 8 0 018-8" />
         </svg>
       </div>
-     
+
     </div>
   );
 }
