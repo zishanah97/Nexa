@@ -73,50 +73,7 @@ function TopChoices() {
   // Use ref to track if we've already processed the current preferences
   const processedPrefKeyRef = React.useRef(null);
 
-  // Helper function to fetch itinerary (only when needed)
-  const fetchItineraryIfNeeded = React.useCallback(async () => {
-    if (!preferences.location || !recommendation) return;
 
-    const currentKey = generatePreferenceKey(preferences);
-
-    // Skip if we've already processed these exact preferences
-    if (processedPrefKeyRef.current === currentKey) {
-      console.log("Skipping itinerary API call - already processed these preferences");
-      return;
-    }
-
-    // Use utility function to check if we should fetch
-    if (!shouldFetchData(preferences, allItineraries)) {
-      console.log("Skipping itinerary API call - data already cached or preferences unchanged");
-      // Mark as processed even if we're not fetching
-      processedPrefKeyRef.current = currentKey;
-      return;
-    }
-
-    try {
-      console.log("Fetching new itinerary for preferences:", preferences);
-      const response = await fetch(`${API_BASE}/api/v1/recommendations/itinerary`, {
-        method: 'POST',
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ preferences })
-      });
-
-      if (response.ok) {
-        const itineraryData = await response.json();
-        console.log("New itinerary data received:", itineraryData);
-
-        // Store itinerary and update last fetched key
-        dispatch(setItinerary({ key: currentKey, data: itineraryData }));
-        dispatch(setLastFetchedKey(currentKey));
-        processedPrefKeyRef.current = currentKey;
-        console.log("Itinerary cached and fetch key updated");
-      } else {
-        console.error("Failed to fetch itinerary:", response.status, response.statusText);
-      }
-    } catch (err) {
-      console.error("Failed to fetch itinerary:", err);
-    }
-  }, [preferences, recommendation, allItineraries, dispatch]);
 
   // Only fetch itinerary when truly needed - use a more stable check
   React.useEffect(() => {
@@ -132,15 +89,49 @@ function TopChoices() {
       return;
     }
 
-    // Check if we should fetch - this will be false if data exists or preferences unchanged
-    if (shouldFetchData(preferences, allItineraries)) {
-      // Fetch immediately in the background so itinerary is ready when user opens the page
-      fetchItineraryIfNeeded();
-    } else {
-      // Mark as processed if we're not fetching
-      processedPrefKeyRef.current = currentKey;
+    // Skip if we've already processed these exact preferences
+    if (processedPrefKeyRef.current === currentKey) {
+      console.log("Skipping itinerary API call - already processed these preferences");
+      return;
     }
-  }, [preferences.location, preferences.days, preferences.numPeople, preferences.budget, recommendation, allItineraries, fetchItineraryIfNeeded]);
+
+    // Use utility function to check if we should fetch
+    if (!shouldFetchData(preferences, allItineraries)) {
+      console.log("Skipping itinerary API call - data already cached or preferences unchanged");
+      processedPrefKeyRef.current = currentKey;
+      return;
+    }
+
+    // Fetch the itinerary
+    const fetchItinerary = async () => {
+      try {
+        console.log("Fetching new itinerary for preferences:", preferences);
+        const response = await fetch(`${API_BASE}/api/v1/recommendations/itinerary`, {
+          method: 'POST',
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ preferences })
+        });
+
+        if (response.ok) {
+          const itineraryData = await response.json();
+          console.log("New itinerary data received:", itineraryData);
+
+          // Store itinerary and update last fetched key
+          dispatch(setItinerary({ key: currentKey, data: itineraryData }));
+          dispatch(setLastFetchedKey(currentKey));
+          processedPrefKeyRef.current = currentKey;
+          console.log("Itinerary cached and fetch key updated");
+        } else {
+          console.error("Failed to fetch itinerary:", response.status, response.statusText);
+        }
+      } catch (err) {
+        console.error("Failed to fetch itinerary:", err);
+      }
+    };
+
+    // Fetch immediately in the background so itinerary is ready when user opens the page
+    fetchItinerary();
+  }, [preferences.location, preferences.days, preferences.numPeople, preferences.budget, recommendation, allItineraries, dispatch]);
 
   // Debug logging to help troubleshoot
   React.useEffect(() => {
@@ -465,7 +456,8 @@ function TopChoices() {
                 onClick={() => {
                   // Clear cached data and force refetch
                   dispatch(setLastFetchedKey(null));
-                  fetchItineraryIfNeeded();
+                  processedPrefKeyRef.current = null;
+                  // The useEffect will trigger automatically on next render
                 }}
                 className="w-full sm:w-auto px-4 sm:px-6 py-2 sm:py-4 bg-gradient-to-r from-neutral-900 to-neutral-700 text-white font-bold rounded-2xl shadow-2xl text-sm sm:text-base cursor-pointer"
                 whileHover={{ scale: 1.06, y: -3 }}

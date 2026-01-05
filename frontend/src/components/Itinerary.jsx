@@ -19,6 +19,9 @@ export default function Itinerary() {
   const [error, setError] = React.useState(null);
   const [openDayIndex, setOpenDayIndex] = React.useState(0);
 
+  // Track if we're currently fetching to prevent duplicate requests
+  const fetchingRef = React.useRef(false);
+
   // Generate current key based on active preferences
   const currentKey = generatePreferenceKey(preferences);
   const itinerary = currentKey ? allItineraries[currentKey] : null;
@@ -61,12 +64,16 @@ export default function Itinerary() {
   if (preferences.budget) metaParts.push(`${preferences.budget} budget`);
 
   React.useEffect(() => {
-    if (!preferences.location || !currentKey || itinerary) return;
+    // Don't fetch if already have data, no valid key, or currently fetching
+    if (!preferences.location || !currentKey || itinerary || fetchingRef.current) return;
 
     const fetchItinerary = async () => {
       try {
+        fetchingRef.current = true;
         setLoading(true);
         setError(null);
+        console.log("Fetching itinerary for key:", currentKey);
+
         const response = await fetch(`${API_BASE}/api/v1/recommendations/itinerary`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -75,19 +82,22 @@ export default function Itinerary() {
 
         if (response.ok) {
           const data = await response.json();
+          console.log("Itinerary fetched successfully");
           dispatch(setItinerary({ key: currentKey, data }));
         } else {
           setError("Failed to generate itinerary. Please try again.");
         }
       } catch (e) {
+        console.error("Itinerary fetch error:", e);
         setError("Failed to generate itinerary. Please check your connection.");
       } finally {
         setLoading(false);
+        fetchingRef.current = false;
       }
     };
 
     fetchItinerary();
-  }, [preferences, currentKey, itinerary, dispatch]);
+  }, [preferences.location, preferences.days, preferences.numPeople, preferences.budget, currentKey, itinerary, dispatch]);
 
   // SAFE: Check if we have a valid, non-empty array
   const hasValidItinerary =
@@ -144,8 +154,8 @@ export default function Itinerary() {
             {error
               ? error
               : hasAnySavedItineraries
-              ? `No itinerary found for your current preferences.`
-              : `You need to generate an itinerary first from your recommendations.`}
+                ? `No itinerary found for your current preferences.`
+                : `You need to generate an itinerary first from your recommendations.`}
           </p>
 
           {/* Optional: Show helpful action buttons */}
@@ -252,138 +262,138 @@ export default function Itinerary() {
               const isOpen = openDayIndex === dayIndex;
 
               return (
-              <motion.div
-                key={dayIndex}
-                className="bg-white/95 backdrop-blur-sm rounded-3xl shadow-[0_18px_40px_rgba(15,23,42,0.08)] border border-orange-100/70 px-6 sm:px-8 py-7 sm:py-8 relative overflow-hidden"
-                initial={{ opacity: 0, y: 24 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: dayIndex * 0.06, duration: 0.6, type: "spring", stiffness: 95 }}
-                whileHover={{ y: -4, scale: 1.01 }}
-                whileTap={{ scale: 0.97 }}
-              >
-                <div className="absolute inset-y-0 left-0 w-1 bg-gradient-to-b from-orange-500 to-yellow-400 rounded-r-full opacity-80" />
-
-                {/* Day header */}
-                <div
-                  className="flex items-start gap-4 mb-5 cursor-pointer"
-                  onClick={() => setOpenDayIndex(isOpen ? -1 : dayIndex)}
+                <motion.div
+                  key={dayIndex}
+                  className="bg-white/95 backdrop-blur-sm rounded-3xl shadow-[0_18px_40px_rgba(15,23,42,0.08)] border border-orange-100/70 px-6 sm:px-8 py-7 sm:py-8 relative overflow-hidden"
+                  initial={{ opacity: 0, y: 24 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: dayIndex * 0.06, duration: 0.6, type: "spring", stiffness: 95 }}
+                  whileHover={{ y: -4, scale: 1.01 }}
+                  whileTap={{ scale: 0.97 }}
                 >
-                  <div className="mt-0.5 flex-shrink-0 w-9 h-9 sm:w-10 sm:h-10 bg-gradient-to-br from-orange-500 to-yellow-400 rounded-full flex items-center justify-center text-white font-bold text-xs sm:text-sm shadow-lg shadow-orange-500/30">
-                    {day.day || dayIndex + 1}
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <h2
-                      className="font-semibold text-neutral-900 truncate"
-                      style={{
-                        fontFamily: '"Inter", sans-serif',
-                        fontSize: "clamp(1.05rem, 1.3vw + 0.9rem, 1.35rem)",
-                        lineHeight: 1.2,
-                      }}
-                    >
-                      {day.theme || `Day ${day.day || dayIndex + 1}`}
-                    </h2>
-                    {preferences.location && (
-                      <p
-                        className="text-xs sm:text-sm text-neutral-500 mt-1"
+                  <div className="absolute inset-y-0 left-0 w-1 bg-gradient-to-b from-orange-500 to-yellow-400 rounded-r-full opacity-80" />
+
+                  {/* Day header */}
+                  <div
+                    className="flex items-start gap-4 mb-5 cursor-pointer"
+                    onClick={() => setOpenDayIndex(isOpen ? -1 : dayIndex)}
+                  >
+                    <div className="mt-0.5 flex-shrink-0 w-9 h-9 sm:w-10 sm:h-10 bg-gradient-to-br from-orange-500 to-yellow-400 rounded-full flex items-center justify-center text-white font-bold text-xs sm:text-sm shadow-lg shadow-orange-500/30">
+                      {day.day || dayIndex + 1}
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <h2
+                        className="font-semibold text-neutral-900 truncate"
                         style={{
                           fontFamily: '"Inter", sans-serif',
-                          fontSize: "clamp(0.78rem, 1.8vw, 0.9rem)",
-                          letterSpacing: "0.02em",
+                          fontSize: "clamp(1.05rem, 1.3vw + 0.9rem, 1.35rem)",
+                          lineHeight: 1.2,
                         }}
                       >
-                        Around {preferences.location}
-                      </p>
-                    )}
-                  </div>
-                </div>
-
-                {/* Activities list */}
-                {isOpen && (
-                <div className="space-y-5 sm:space-y-6">
-                  {(day.activities || []).map((act, actIndex) => (
-                    <motion.div
-                      key={actIndex}
-                      className="rounded-2xl border border-neutral-100 bg-gradient-to-br from-neutral-50 to-white px-4 sm:px-5 py-5 sm:py-6 flex flex-col sm:flex-row sm:items-start gap-4 sm:gap-5 shadow-[0_10px_30px_rgba(15,23,42,0.04)]"
-                      initial={{ opacity: 0, y: 20 }}
-                      whileInView={{ opacity: 1, y: 0 }}
-                      viewport={{ once: true, amount: 0.2 }}
-                      transition={{ duration: 0.5, delay: actIndex * 0.05 }}
-                      whileHover={{ y: -4, boxShadow: "0 18px 45px rgba(15,23,42,0.12)" }}
-                      whileTap={{ scale: 0.97 }}
-                    >
-                      <div className="text-[10px] sm:text-[11px] font-semibold text-orange-600 uppercase tracking-[0.24em] w-24 flex-shrink-0 pt-0.5">
-                        {act.time || "Anytime"}
-                      </div>
-                      <div className="flex-1 min-w-0 flex flex-col gap-1.5">
-                        <div className="flex flex-wrap items-center gap-2">
-                          <span className="font-semibold text-neutral-900 text-sm sm:text-base">
-                            {act.title || "Activity"}
-                          </span>
-                          {act.duration && (
-                            <motion.span
-                              className="inline-flex items-center px-2.5 py-0.5 text-[11px] rounded-full bg-orange-100 text-orange-700 font-medium"
-                              initial={{ opacity: 0, scale: 0.9 }}
-                              whileInView={{ opacity: 1, scale: 1 }}
-                              viewport={{ once: true, amount: 0.3 }}
-                              transition={{ duration: 0.35, delay: actIndex * 0.05 + 0.05 }}
-                            >
-                              {act.duration}
-                            </motion.span>
-                          )}
-                          {act.category && (
-                            <motion.span
-                              className="inline-flex items-center px-2.5 py-0.5 text-[11px] rounded-full bg-neutral-900 text-white font-medium"
-                              initial={{ opacity: 0, scale: 0.9 }}
-                              whileInView={{ opacity: 1, scale: 1 }}
-                              viewport={{ once: true, amount: 0.3 }}
-                              transition={{ duration: 0.35, delay: actIndex * 0.05 + 0.08 }}
-                            >
-                              {act.category}
-                            </motion.span>
-                          )}
-                        </div>
-                        {act.description && (
-                          <p
-                            className="text-xs sm:text-sm text-neutral-700 leading-relaxed"
-                            style={{
-                              fontFamily: '\"Inter\", sans-serif',
-                              fontSize: "clamp(0.95rem, 2.4vw, 1.05rem)",
-                              color: "#444444",
-                            }}
-                          >
-                            {act.description}
-                          </p>
-                        )}
-                        <div className="flex flex-wrap gap-3 items-center mt-1.5">
-                          {act.est_cost_per_person && (
-                            <p className="text-[11px] sm:text-xs text-neutral-500">
-                              Budget: {act.est_cost_per_person.min} - {act.est_cost_per_person.max} per person
-                            </p>
-                          )}
-                          {act.map_hint && (
-                            <p className="text-[11px] sm:text-xs text-neutral-500 flex items-center gap-1">
-                              <span className="inline-block w-1.5 h-1.5 rounded-full bg-emerald-500" />
-                              {act.map_hint}
-                            </p>
-                          )}
-                        </div>
-                      </div>
-
-                      {act.image && (
-                        <div className="w-full sm:w-32 aspect-[4/3] rounded-2xl overflow-hidden border border-neutral-200/60 shadow-[0_10px_24px_rgba(15,23,42,0.12)] flex-shrink-0">
-                          <img
-                            src={act.image.imageUrl || act.image.largeImageUrl || act.image}
-                            alt={act.title || "Activity image"}
-                            className="w-full h-full object-cover"
-                            loading="lazy"
-                          />
-                        </div>
+                        {day.theme || `Day ${day.day || dayIndex + 1}`}
+                      </h2>
+                      {preferences.location && (
+                        <p
+                          className="text-xs sm:text-sm text-neutral-500 mt-1"
+                          style={{
+                            fontFamily: '"Inter", sans-serif',
+                            fontSize: "clamp(0.78rem, 1.8vw, 0.9rem)",
+                            letterSpacing: "0.02em",
+                          }}
+                        >
+                          Around {preferences.location}
+                        </p>
                       )}
-                    </motion.div>
-                  ))}
-                </div>
-                )}
-              </motion.div>
+                    </div>
+                  </div>
+
+                  {/* Activities list */}
+                  {isOpen && (
+                    <div className="space-y-5 sm:space-y-6">
+                      {(day.activities || []).map((act, actIndex) => (
+                        <motion.div
+                          key={actIndex}
+                          className="rounded-2xl border border-neutral-100 bg-gradient-to-br from-neutral-50 to-white px-4 sm:px-5 py-5 sm:py-6 flex flex-col sm:flex-row sm:items-start gap-4 sm:gap-5 shadow-[0_10px_30px_rgba(15,23,42,0.04)]"
+                          initial={{ opacity: 0, y: 20 }}
+                          whileInView={{ opacity: 1, y: 0 }}
+                          viewport={{ once: true, amount: 0.2 }}
+                          transition={{ duration: 0.5, delay: actIndex * 0.05 }}
+                          whileHover={{ y: -4, boxShadow: "0 18px 45px rgba(15,23,42,0.12)" }}
+                          whileTap={{ scale: 0.97 }}
+                        >
+                          <div className="text-[10px] sm:text-[11px] font-semibold text-orange-600 uppercase tracking-[0.24em] w-24 flex-shrink-0 pt-0.5">
+                            {act.time || "Anytime"}
+                          </div>
+                          <div className="flex-1 min-w-0 flex flex-col gap-1.5">
+                            <div className="flex flex-wrap items-center gap-2">
+                              <span className="font-semibold text-neutral-900 text-sm sm:text-base">
+                                {act.title || "Activity"}
+                              </span>
+                              {act.duration && (
+                                <motion.span
+                                  className="inline-flex items-center px-2.5 py-0.5 text-[11px] rounded-full bg-orange-100 text-orange-700 font-medium"
+                                  initial={{ opacity: 0, scale: 0.9 }}
+                                  whileInView={{ opacity: 1, scale: 1 }}
+                                  viewport={{ once: true, amount: 0.3 }}
+                                  transition={{ duration: 0.35, delay: actIndex * 0.05 + 0.05 }}
+                                >
+                                  {act.duration}
+                                </motion.span>
+                              )}
+                              {act.category && (
+                                <motion.span
+                                  className="inline-flex items-center px-2.5 py-0.5 text-[11px] rounded-full bg-neutral-900 text-white font-medium"
+                                  initial={{ opacity: 0, scale: 0.9 }}
+                                  whileInView={{ opacity: 1, scale: 1 }}
+                                  viewport={{ once: true, amount: 0.3 }}
+                                  transition={{ duration: 0.35, delay: actIndex * 0.05 + 0.08 }}
+                                >
+                                  {act.category}
+                                </motion.span>
+                              )}
+                            </div>
+                            {act.description && (
+                              <p
+                                className="text-xs sm:text-sm text-neutral-700 leading-relaxed"
+                                style={{
+                                  fontFamily: '\"Inter\", sans-serif',
+                                  fontSize: "clamp(0.95rem, 2.4vw, 1.05rem)",
+                                  color: "#444444",
+                                }}
+                              >
+                                {act.description}
+                              </p>
+                            )}
+                            <div className="flex flex-wrap gap-3 items-center mt-1.5">
+                              {act.est_cost_per_person && (
+                                <p className="text-[11px] sm:text-xs text-neutral-500">
+                                  Budget: {act.est_cost_per_person.min} - {act.est_cost_per_person.max} per person
+                                </p>
+                              )}
+                              {act.map_hint && (
+                                <p className="text-[11px] sm:text-xs text-neutral-500 flex items-center gap-1">
+                                  <span className="inline-block w-1.5 h-1.5 rounded-full bg-emerald-500" />
+                                  {act.map_hint}
+                                </p>
+                              )}
+                            </div>
+                          </div>
+
+                          {act.image && (
+                            <div className="w-full sm:w-32 aspect-[4/3] rounded-2xl overflow-hidden border border-neutral-200/60 shadow-[0_10px_24px_rgba(15,23,42,0.12)] flex-shrink-0">
+                              <img
+                                src={act.image.imageUrl || act.image.largeImageUrl || act.image}
+                                alt={act.title || "Activity image"}
+                                className="w-full h-full object-cover"
+                                loading="lazy"
+                              />
+                            </div>
+                          )}
+                        </motion.div>
+                      ))}
+                    </div>
+                  )}
+                </motion.div>
               );
             })}
           </div>
