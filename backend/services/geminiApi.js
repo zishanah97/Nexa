@@ -34,7 +34,7 @@ export async function getGeminiRecommendations(prompt) {
           "Content-Type": "application/json",
           Authorization: `Bearer ${OPENCODEZEN_API_KEY}`,
         },
-        timeout: 120000, // 2 minute timeout for large responses
+        timeout: 300000, // 5 minute timeout for large responses
       }
     );
 
