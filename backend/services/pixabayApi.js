@@ -15,12 +15,18 @@ export async function fetchPixabayImages(query, perPage = 10) {
     }
   });
 
-  return data.hits.map(img => ({
-    id: img.id,
-    imageUrl: img.webformatURL,
-    largeImageUrl: img.largeImageURL,
-    description: img.tags,
-    photographer: img.user,
-    photographerProfile: `https://pixabay.com/users/${img.user}-${img.user_id}/`
-  }));
+  return data.hits.map(img => {
+    // Encode the Pixabay URL
+    const encodedWebUrl = encodeURIComponent(img.webformatURL);
+    const encodedLargeUrl = encodeURIComponent(img.largeImageURL);
+    
+    return {
+      id: img.id,
+      imageUrl: `https://images.weserv.nl/?url=${encodedWebUrl}`,
+      largeImageUrl: `https://images.weserv.nl/?url=${encodedLargeUrl}`,
+      description: img.tags,
+      photographer: img.user,
+      photographerProfile: `https://pixabay.com/users/${img.user}-${img.user_id}/`
+    };
+  });
 }
