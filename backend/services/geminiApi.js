@@ -5,7 +5,7 @@ dotenv.config();
 
 const OPENCODEZEN_API_KEY = process.env.OPENCODEZEN_API_KEY;
 const OPENCODEZEN_BASE_URL = process.env.OPENCODEZEN_BASE_URL || "https://opencode.ai/zen/v1";
-const OPENCODEZEN_MODEL = process.env.OPENCODEZEN_MODEL || "mimo-v2.5-free";
+const OPENCODEZEN_MODEL = "mimo-v2.5-free";
 
 export async function getGeminiRecommendations(prompt) {
   try {
