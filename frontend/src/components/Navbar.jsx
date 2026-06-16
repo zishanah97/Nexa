@@ -1,8 +1,8 @@
 // src/components/Navbar.jsx
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { NavLink, useLocation } from "react-router-dom";
 import { Search, MapPin, Route, Menu, X } from "lucide-react";
+import { NavLink, useLocation } from "react-router-dom";
 import logo from "../assets/logo.png";
 
 export default function Navbar() {
@@ -104,17 +104,22 @@ export default function Navbar() {
             </nav>
           )}
 
-          {/* === RIGHT SIDE: NX BADGE + HAMBURGER (MOBILE) === */}
+          {/* === RIGHT SIDE: CTA (landing) | NX BADGE + HAMBURGER (inner pages) === */}
           <div className="flex shrink-0 items-center gap-2">
-            {/* NX badge moved to the far right */}
-            <motion.span
-              whileHover={{ scale: 1.04 }}
-              whileTap={{ scale: 0.97 }}
-              className="hidden sm:flex h-8 w-8 items-center justify-center rounded-[6px] border border-neutral-200 text-[11px] font-semibold tracking-[0.12em] text-neutral-800 bg-gradient-to-br from-neutral-50 to-neutral-100"
-              style={{ fontFamily: '"Inter", sans-serif' }}
-            >
-              NX
-            </motion.span>
+            {/* "Try It" CTA — only on the landing page */}
+            {isLanding && (
+              <NavLink to="/home">
+                <motion.button
+                  whileHover={{ scale: 1.06, y: -2 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="bg-black text-white px-5 py-2 rounded-full font-semibold text-sm shadow-md hover:bg-gray-800 transition-all duration-200 cursor-pointer"
+                  style={{ fontFamily: 'var(--font-ui)', letterSpacing: "0.01em" }}
+                >
+                  Try It
+                </motion.button>
+              </NavLink>
+            )}
+
 
             {!isLanding && (
               <motion.button

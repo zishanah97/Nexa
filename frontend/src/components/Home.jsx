@@ -223,14 +223,14 @@ export default function Home() {
               <motion.span
                 variants={titleLine}
                 className="font-black tracking-tight text-4xl sm:text-6xl md:text-7xl lg:text-8xl text-black"
-                style={{ fontFamily: '"Bebas Neue", cursive', display: "inline-block" }}
+                style={{ fontFamily: 'var(--font-display)', display: "inline-block" }}
               >
                 Where Dreams
               </motion.span>
               <motion.span
                 variants={titleLine}
                 className="bg-gradient-to-r from-orange-600 via-orange-500 to-yellow-400 bg-clip-text text-transparent font-bold text-4xl sm:text-6xl md:text-7xl lg:text-8xl"
-                style={{ fontFamily: '"Playfair Display", serif', display: "inline-block" }}
+                style={{ fontFamily: 'var(--font-serif)', display: "inline-block" }}
               >
                 TAKE FLIGHT
               </motion.span>
@@ -238,10 +238,10 @@ export default function Home() {
             <motion.p
               variants={subtitle}
               className="text-xs sm:text-sm md:text-base text-gray-700 max-w-xl mx-auto font-medium px-4"
-              style={{ fontFamily: '"Montserrat", sans-serif', lineHeight: 1.7, letterSpacing: "0.01em" }}
+              style={{ fontFamily: 'var(--font-ui)', lineHeight: 1.7, letterSpacing: "0.01em" }}
             >
               Tell us your
-              <motion.span className="text-orange-600 inline-block ml-1" style={{ fontFamily: '"Lobster", cursive', fontWeight: 700 }}>
+              <motion.span className="text-orange-600 inline-block ml-1" style={{ fontFamily: 'var(--font-serif)', fontStyle: 'italic', fontWeight: 600 }}>
                 destination & vibe
               </motion.span>
               — we'll craft the perfect journey.
@@ -253,8 +253,8 @@ export default function Home() {
             <div className="flex items-center justify-center gap-1.5 mb-4 sm:mb-6">
               <TrendingUp className="w-3 h-3 sm:w-4 sm:h-4 text-orange-600" />
               <h4
-                className="text-xs sm:text-sm font-medium text-gray-700 uppercase tracking-wider"
-                style={{ fontFamily: '"Unbounded", sans-serif"' }}
+                className="text-xs sm:text-sm font-semibold text-gray-700 uppercase tracking-wider"
+                style={{ fontFamily: 'var(--font-ui)' }}
               >
                 Popular Destinations
               </h4>
@@ -270,8 +270,12 @@ export default function Home() {
                   whileHover={{ scale: 1.05, y: -2 }}
                   whileTap={{ scale: 0.98 }}
                   onClick={() => setPref({ ...pref, destination: dest })}
-                  className="group px-4 py-2 sm:px-5 sm:py-2.5 bg-white/80 backdrop-blur-md relative rounded-full text-xs sm:text-sm font-semibold text-gray-700 hover:bg-orange-50 hover:text-orange-700 transition-all duration-300 shadow-sm hover:shadow-lg cursor-pointer"
-                  style={{ fontFamily: '"Inter", sans-serif' }}
+                  className={`group px-4 py-2 sm:px-5 sm:py-2.5 backdrop-blur-md relative rounded-full text-xs sm:text-sm font-semibold transition-all duration-300 shadow-sm hover:shadow-lg cursor-pointer ${
+                    pref.destination === dest
+                      ? "bg-orange-50 text-orange-700 border border-orange-300"
+                      : "bg-white/80 text-gray-700 hover:bg-orange-50 hover:text-orange-700"
+                  }`}
+                  style={{ fontFamily: 'var(--font-ui)' }}
                 >
                   {dest}
                   <span className="pointer-events-none absolute bottom-0 w-[88%] left-1/2 -translate-x-1/2 h-[2px] bg-gradient-to-r from-transparent via-amber-600 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
@@ -287,7 +291,7 @@ export default function Home() {
             variants={formCard}
           >
             <form
-              className="backdrop-blur-2xl rounded-3xl p-6 sm:p-8 lg:p-10 overflow-visible shadow-[0_20px_40px_rgba(0,0,0,0.08)] transition-all duration-300 bg-white"
+              className="backdrop-blur-2xl rounded-3xl p-6 sm:p-8 lg:p-10 overflow-visible shadow-[0_20px_40px_rgba(0,0,0,0.08)] transition-all duration-300 bg-gray-50"
               onSubmit={(e) => {
                 e.preventDefault();
                 handleSearch();
@@ -300,7 +304,7 @@ export default function Home() {
                     <MapPin className="w-5 h-5 text-orange-600" />
                     <label
                       className="text-xs sm:text-sm font-bold tracking-wide text-gray-800 uppercase"
-                      style={{ fontFamily: '"Unbounded", sans-serif"' }}
+                      style={{ fontFamily: 'var(--font-ui)' }}
                     >
                       Destination
                     </label>
@@ -309,7 +313,7 @@ export default function Home() {
                     type="text"
                     placeholder="Where to? (e.g., Goa, Manali, Varanasi...)"
                     className="w-full bg-white/95 backdrop-blur-sm text-gray-900 placeholder-gray-500 px-5 sm:px-6 py-4 text-base sm:text-lg rounded-2xl outline-none border-2 border-gray-200 focus:border-orange-400 focus:shadow-lg transition-all duration-300 font-medium"
-                    style={{ fontFamily: '"Inter", sans-serif' }}
+                    style={{ fontFamily: 'var(--font-ui)' }}
                     value={pref.destination}
                     onChange={(e) => setPref({ ...pref, destination: e.target.value })}
                     onFocus={() => setFocused(true)}
@@ -367,7 +371,6 @@ export default function Home() {
                   />
                 </motion.div>
 
-                {/* Button to submit the form and start planning */}
                 <motion.button
                   type="submit"
                   disabled={loading || !isFormValid}
@@ -375,19 +378,36 @@ export default function Home() {
                   whileHover={isFormValid && !loading ? { scale: 1.02, y: -2 } : {}}
                   whileTap={isFormValid && !loading ? { scale: 0.98 } : {}}
                   className={`group w-full relative overflow-hidden bg-black text-white font-bold px-8 py-4 rounded-full text-lg sm:text-xl shadow-xl flex items-center justify-center gap-3 transition-all duration-300 ${
-                    !isFormValid || loading ? "opacity-50 cursor-not-allowed" : ""
+                    !isFormValid || loading ? "opacity-70 cursor-not-allowed" : ""
                   }`}
-                  style={{ fontFamily: '"Inter", sans-serif', letterSpacing: "0.01em" }}
+                  style={{ fontFamily: 'var(--font-ui)', letterSpacing: "0.01em" }}
                 >
                   {loading ? (
-                    <div className="relative size-20">
-                      <div className="absolute inset-0 bg-gradient-to-br from-orange-400/20 via-purple-600/30 to-cyan-500/20 rounded-full blur-2xl animate-pulse" />
-                      <div className="absolute inset-0 rounded-full animate-spin [animation-duration:8s] [background:conic-gradient(from_0deg,transparent_75%,#FF6B00_100%)]" />
-                      <div className="absolute inset-2 rounded-full animate-spin [animation-duration:6s] [animation-direction:reverse] [background:conic-gradient(from_90deg,transparent_70%,#FBBF24_100%)]" />
-                      <div className="absolute inset-4 rounded-full animate-spin [animation-duration:4s] [background:conic-gradient(from_180deg,transparent_75%,#0EA5E9_100%)]" />
-                      <div className="absolute inset-6 rounded-full animate-spin [animation-duration:3s] [background:conic-gradient(from_270deg,transparent_70%,#8B5CF6_100%)]" />
-                      <div className="absolute inset-8 size-8 bg-white rounded-full shadow-2xl blur-sm" />
-                    </div>
+                    <>
+                      {/* Tight inline SVG spinner — fits cleanly inside button */}
+                      <svg
+                        className="animate-spin w-5 h-5 shrink-0"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <circle
+                          className="opacity-25"
+                          cx="12" cy="12" r="10"
+                          stroke="white"
+                          strokeWidth="3"
+                        />
+                        <path
+                          className="opacity-90"
+                          fill="none"
+                          stroke="#FB923C"
+                          strokeWidth="3"
+                          strokeLinecap="round"
+                          d="M12 2 a10 10 0 0 1 10 10"
+                        />
+                      </svg>
+                      <span className="text-base sm:text-lg font-semibold">Planning your trip...</span>
+                    </>
                   ) : (
                     <>
                       <span className="hidden sm:inline">Start Planning</span>
@@ -413,7 +433,7 @@ function CustomDropdown({ label, icon, options, value, placeholder, open, onTogg
         <span className="text-orange-600">{icon}</span>
         <label
           className="text-xs font-bold tracking-wide text-gray-700 uppercase"
-          style={{ fontFamily: '"Unbounded", sans-serif"' }}
+          style={{ fontFamily: 'var(--font-ui)' }}
         >
           {label}
         </label>
@@ -427,7 +447,7 @@ function CustomDropdown({ label, icon, options, value, placeholder, open, onTogg
         className={`w-full bg-white/95 backdrop-blur-sm border-2 px-4 sm:px-5 py-3.5 rounded-xl flex items-center justify-between gap-2 text-sm font-semibold transition-all duration-300 ${
           open ? "border-orange-400 shadow-lg" : "border-gray-200 hover:border-gray-300"
         } ${value ? "text-gray-900" : "text-gray-500"}`}
-        style={{ fontFamily: '"Inter", sans-serif' }}
+        style={{ fontFamily: 'var(--font-ui)' }}
       >
         <span className="truncate text-left">{value || placeholder}</span>
         <motion.div
@@ -456,7 +476,7 @@ function CustomDropdown({ label, icon, options, value, placeholder, open, onTogg
                 variants={dropdownItem}
                 onClick={() => onSelect(opt)}
                 className="px-4 sm:px-5 py-3 hover:bg-orange-50 cursor-pointer text-gray-800 font-medium transition-colors first:rounded-t-xl last:rounded-b-xl border-b border-gray-100 last:border-0"
-                style={{ fontFamily: '"Inter", sans-serif' }}
+                style={{ fontFamily: 'var(--font-ui)' }}
                 whileHover={{ x: 4 }}
               >
                 {opt}

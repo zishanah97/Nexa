@@ -1,5 +1,24 @@
 @import "tailwindcss";
 
+/* ─────────────────────────────────────────
+   DESIGN TOKENS — Typography System
+   3 fonts. No more. No less.
+   
+   --font-display  → Bebas Neue       (hero headlines only)
+   --font-serif    → Playfair Display (gradient accent words)
+   --font-ui       → Inter            (everything else: labels, body, buttons, inputs)
+───────────────────────────────────────── */
+:root {
+  --font-display: "Bebas Neue", cursive;
+  --font-serif:   "Playfair Display", serif;
+  --font-ui:      "Inter", sans-serif;
+}
+
+/* Apply Inter as the default body font globally */
+body {
+  font-family: var(--font-ui);
+}
+
 /* Smooth scrolling for better UX */
 html {
   scroll-behavior: smooth;
