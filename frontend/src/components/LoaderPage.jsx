@@ -4,7 +4,7 @@ import { useDispatch } from "react-redux";
 import { setRecommendation } from "../slices/recommendationSlice";
 import { setLastFetchedKey } from "../slices/preferencesSlice";
 import axios from "axios";
-const API_BASE = "https://nexa-3.onrender.com";
+const API_BASE = "https://nexa-9la3.onrender.com";
 
 const steps = [
   "Submitting your search preferences",

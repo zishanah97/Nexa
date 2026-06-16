@@ -7,7 +7,7 @@ import { setLastFetchedKey } from "../slices/preferencesSlice.js";
 import { generatePreferenceKey, shouldFetchData } from "../utils/cacheUtils.js";
 import { motion, useScroll, useTransform } from "framer-motion";
 
-const API_BASE = "https://nexa-3.onrender.com";
+const API_BASE = "https://nexa-9la3.onrender.com";
 
 function TopChoices() {
   const locationRouter = useLocation();
