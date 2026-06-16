@@ -43,11 +43,34 @@ export async function getGeminiRecommendations(prompt) {
     console.log("[OpenCodeZen] Raw response length:", raw.length);
 
     // Strip markdown code fences if model wraps JSON in them
-    const clean = raw
-      .replace(/^```json\s*/i, "")
-      .replace(/^```\s*/i, "")
-      .replace(/```\s*$/i, "")
-      .trim();
+    let clean = raw.trim();
+    if (clean.startsWith("```json")) {
+      clean = clean.replace(/^```json\s*/i, "");
+    } else if (clean.startsWith("```")) {
+      clean = clean.replace(/^```\s*/i, "");
+    }
+    if (clean.endsWith("```")) {
+      clean = clean.replace(/```\s*$/i, "");
+    }
+    clean = clean.trim();
+
+    // Fallback: extract substring from first { or [ to last } or ]
+    const firstBrace = clean.indexOf('{');
+    const firstBracket = clean.indexOf('[');
+    let startIndex = -1;
+    if (firstBrace !== -1 && firstBracket !== -1) {
+      startIndex = Math.min(firstBrace, firstBracket);
+    } else {
+      startIndex = Math.max(firstBrace, firstBracket);
+    }
+    
+    const lastBrace = clean.lastIndexOf('}');
+    const lastBracket = clean.lastIndexOf(']');
+    const endIndex = Math.max(lastBrace, lastBracket);
+    
+    if (startIndex !== -1 && endIndex !== -1 && endIndex > startIndex) {
+      clean = clean.substring(startIndex, endIndex + 1);
+    }
 
     let parsed;
     try {

@@ -37,11 +37,10 @@ BUDGET LOGIC
 OUTPUT FORMAT (STRICT JSON ONLY; NO EXTRA TEXT)
 {
   "preferences": {
-   location : ${preferences.location}          
- numPeople:  ${preferences.numPeople}
-budget: ${preferences.budget}     
- days:  ${preferences.days}     
-   
+    "location": "${preferences.location}",
+    "numPeople": ${preferences.numPeople},
+    "budget": "${preferences.budget}",
+    "days": ${preferences.days}
   },
   "top_places": [
     {
