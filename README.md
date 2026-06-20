@@ -77,7 +77,7 @@ Let’s build a world where travel, learning, and growth go hand in hand.
 
 ---
 
-— [Sagar Kharal]  
+— [Zishan Ahmad]
 BTech CSE   
 [GitHub](https://github.com/Sagar-024)
 
